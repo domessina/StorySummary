@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 public class PresentationActivity extends AppCompatActivity {
 
-
+    int var;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
