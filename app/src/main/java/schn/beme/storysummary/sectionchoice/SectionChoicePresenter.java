@@ -33,6 +33,11 @@ public class SectionChoicePresenter extends Presenter {
         }
     }
 
+    public void sectionDiagramSelected()
+    {
+        intentHelper.startDiagramActivity();
+    }
+
 
     public interface View extends Presenter.View{
 

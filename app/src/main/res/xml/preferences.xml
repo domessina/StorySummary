@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Network"
+        android:key="pref_key_network_settings">
+
+        <CheckBoxPreference android:title="Application Updates"
+                            android:defaultValue="false"
+                            android:summary="This option if selected will allow the application to check for latest versions."
+                            android:key="applicationUpdates" />
+        <CheckBoxPreference android:title="Update diagrams"
+                            android:defaultValue="false"
+                            android:summary="At launch if network is enabled"
+                            android:key="diagramsUpdates" />
+    </PreferenceCategory>
+</PreferenceScreen>

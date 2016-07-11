@@ -13,11 +13,20 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MyApplication.context = getApplicationContext();
+//        MyApplication.context = getApplicationContext();
     }
 
-    public static Context getAppContext() {
-        return MyApplication.context;
+    public static synchronized void setCurntActivityContext(Context context)
+    {
+        MyApplication.context=context;
+    }
+
+    public static synchronized Context getCurntActivityContext() {
+        if(context!=null) {
+            return context;
+        } else {
+            throw new NullPointerException("MayApplication.Context is null");
+        }
     }
 
 

@@ -33,5 +33,10 @@ public class Presenter {
 
     }
 
+  /*  private static boolean isXLargeTablet(Context context) {
+
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }*/
 
 }

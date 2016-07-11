@@ -3,28 +3,34 @@
           package="schn.beme.be.storysummary">
 
     <application
+        android:name="schn.beme.storysummary.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name="schn.beme.storysummary.MyApplication"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name="schn.beme.storysummary.registration.RegistrationActivity"
-            android:screenOrientation="portrait"
-          >
+            android:screenOrientation="portrait">
         </activity>
-        <activity
-            android:name="schn.beme.storysummary.sectionchoice.SectionChoiceActivity"
-         >
+        <activity android:name="schn.beme.storysummary.sectionchoice.SectionChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="schn.beme.storysummary.diagram.DiagramActivity"
+        <activity
+            android:name="schn.beme.storysummary.diagram.DiagramActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity
+            android:name="schn.beme.storysummary.settings.SettingsActivity"
+            android:label="@string/title_activity_settings">
+        </activity>
+        <activity android:name="schn.beme.storysummary.test.SolutionActivity">
+        </activity>
+
     </application>
 
 </manifest>

@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.DefaultActivity;
 import schn.beme.storysummary.diagram.DiagramActivity;
 
-public class SectionChoiceActivity extends AppCompatActivity implements SectionChoicePresenter.View{
+public class SectionChoiceActivity extends DefaultActivity implements SectionChoicePresenter.View{
 
     private SectionChoicePresenter presenter;
     //TODO avec picasso tu peux mettre les images en cache, réduisant la mémoire
@@ -17,11 +18,15 @@ public class SectionChoiceActivity extends AppCompatActivity implements SectionC
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_choice);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
         presenter=new SectionChoicePresenter(this);
         presenter.viewInitialized();
     }
-
-
 
     @Override
     public void onBackPressed()//by default it recreates de last activity
@@ -36,8 +41,7 @@ public class SectionChoiceActivity extends AppCompatActivity implements SectionC
     {
         if(v.getId()==R.id.diagram_section_img)
         {
-            Intent intent = new Intent(this, DiagramActivity.class);
-            startActivity(intent);
+          presenter.sectionDiagramSelected();
         }
     }
 

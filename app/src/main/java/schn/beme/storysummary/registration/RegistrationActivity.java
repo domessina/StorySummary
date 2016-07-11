@@ -10,9 +10,10 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.DefaultActivity;
 import schn.beme.storysummary.sectionchoice.SectionChoiceActivity;
 
-public class RegistrationActivity extends AppCompatActivity implements RegistrationPresenter.View{
+public class RegistrationActivity extends DefaultActivity implements RegistrationPresenter.View{
 
     private RegistrationPresenter presenter;
     private SliderLayout sliderLayout;
@@ -22,7 +23,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        presenter=new RegistrationPresenter(this);
+
         initViews();
     }
 
@@ -42,6 +43,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     protected void onResume()
     {
         super.onResume();
+        presenter=new RegistrationPresenter(this);
         sliderLayout.startAutoCycle();
     }
 
