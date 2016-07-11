@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_synchronize"
+        android:icon="@drawable/icon_synch"
+        android:title="@string/action_synchronize"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          app:showAsAction="never"/>
+    <!--app:showAsAction="ifRoom|withText"-->
+
+    <item android:id="@+id/action_debug_reg"
+        android:title="register"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_debug_unreg"
+          android:title="unregister"
+          app:showAsAction="never"/>
+
+</menu>

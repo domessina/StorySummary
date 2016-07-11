@@ -22,6 +22,7 @@ public class SharedPreferencesHelper {
     public  void setUserRegistered(boolean registered)
     {
         editor.putBoolean("registered",registered);
+        editor.apply();  //faster than commit , because does not return boolean and is asynchronous(<>synchronized)
     }
 
     public boolean isUserRegistered()

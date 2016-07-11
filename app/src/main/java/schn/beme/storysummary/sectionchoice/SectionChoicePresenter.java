@@ -6,21 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
+import schn.beme.storysummary.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
 /**
  * Created by Dorito on 10-07-16.
  */
-public class SectionChoicePresenter  {
+public class SectionChoicePresenter extends Presenter {
 
-    private WeakReference<View> view;
     private SharedPreferencesHelper sharedPrefHelper;
     private IntentHelper intentHelper;
 
     public SectionChoicePresenter(View view)
     {
-        this.view=new WeakReference<>(view);
+        super(view);
         sharedPrefHelper=new SharedPreferencesHelper();
         intentHelper=new IntentHelper();
     }
@@ -28,13 +28,13 @@ public class SectionChoicePresenter  {
     public void viewInitialized()
     {
 
-       /* if(!sharedPrefHelper.isUserRegistered()) {
+        if(!sharedPrefHelper.isUserRegistered()) {
             intentHelper.startRegistrationActivity();
-        }*/
+        }
     }
 
 
-    public interface View{
+    public interface View extends Presenter.View{
 
     }
 }

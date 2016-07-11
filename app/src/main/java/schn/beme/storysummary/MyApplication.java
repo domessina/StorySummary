@@ -8,7 +8,7 @@ import android.content.Context;
  */
 public class MyApplication extends Application {
 
-    private static Context context;
+    private static Context context;         //TODO hypothese, si tu as un probleme, c'est p-e pcq plusieurs thread essayent d'accéder/modifier en même temps?
 
     @Override
     public void onCreate() {

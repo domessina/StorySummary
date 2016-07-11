@@ -9,10 +9,6 @@
     </style>-->
 
 
-    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
-    </style>
-
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
     </style>

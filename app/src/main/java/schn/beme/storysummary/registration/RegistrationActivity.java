@@ -88,11 +88,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     public void onClickFbButton(View v)
     {
-      //  presenter.fbButtonClicked();
-        Intent intent = new Intent(this, SectionChoiceActivity.class);
-//        startActivity(intent.FLAG_ACTIVITY_CLEAR_TOP); utiliser ça quand le compte est supprimé et revenir au début
-//        finish();      //Calls are asych, startActivity() will be called
-        startActivity(intent);
+        presenter.fbBtnClicked();
     }
 
 

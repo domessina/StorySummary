@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Story Summary fr</string>
+    <string name="action_synchronize">Synchroniser avec le serveur</string>
+    <string name="action_settings">Paramètres</string>
 </resources>
