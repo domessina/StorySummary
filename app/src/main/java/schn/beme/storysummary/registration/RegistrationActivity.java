@@ -1,7 +1,5 @@
 package schn.beme.storysummary.registration;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,8 +8,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.DefaultActivity;
-import schn.beme.storysummary.sectionchoice.SectionChoiceActivity;
+import schn.beme.storysummary.defaults.DefaultActivity;
 
 public class RegistrationActivity extends DefaultActivity implements RegistrationPresenter.View{
 

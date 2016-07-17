@@ -13,11 +13,31 @@ public class SharedPreferencesHelper {
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
-    public SharedPreferencesHelper()
+
+
+    //-----------SINGLETON HOLDER METHODOLOGY---------------
+
+    private SharedPreferencesHelper()
     {
         sharedPref= MyApplication.getCurntActivityContext().getSharedPreferences("infos", Context.MODE_PRIVATE);
         editor= sharedPref.edit();
     }
+
+    public static SharedPreferencesHelper getInstance()
+    {
+        return SharedPrefHelperHolder.instance;
+    }
+
+
+    private static class SharedPrefHelperHolder
+    {
+        private final static SharedPreferencesHelper instance = new SharedPreferencesHelper();
+    }
+
+
+
+
+    //----------------WORKING METHODS---------------
 
     public  void setUserRegistered(boolean registered)
     {
@@ -29,4 +49,6 @@ public class SharedPreferencesHelper {
     {
        return sharedPref.getBoolean("registered",false);
     }
+
+
 }

@@ -1,7 +1,6 @@
-package schn.beme.storysummary;
+package schn.beme.storysummary.defaults;
 
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,7 +11,7 @@ import schn.beme.be.storysummary.R;
 /**
  * Created by Dorito on 11-07-16.
  */
-public abstract class DefaultActionBarActivity extends DefaultActivity implements DefaultActionBarPresenter.View{
+public abstract class DefaultActionBarActivity extends DefaultActivity implements DefaultActionBarPresenter.View {
 
     private DefaultActionBarPresenter barPresenter;
 

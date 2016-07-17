@@ -1,17 +1,12 @@
 package schn.beme.storysummary.diagram;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.DefaultActionBarActivity;
-import schn.beme.storysummary.Presenter;
+import schn.beme.storysummary.defaults.DefaultActionBarActivity;
+import schn.beme.storysummary.defaults.DefaultActionBarPresenter;
 
-public class DiagramActivity extends DefaultActionBarActivity implements DiagramPresenter.View{
+public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View{
 
     private DiagramPresenter presenter;
 

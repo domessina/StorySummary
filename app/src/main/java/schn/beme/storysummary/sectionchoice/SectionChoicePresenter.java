@@ -15,27 +15,23 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
  */
 public class SectionChoicePresenter extends Presenter {
 
-    private SharedPreferencesHelper sharedPrefHelper;
-    private IntentHelper intentHelper;
 
     public SectionChoicePresenter(View view)
     {
         super(view);
-        sharedPrefHelper=new SharedPreferencesHelper();
-        intentHelper=new IntentHelper();
     }
 
     public void viewInitialized()
     {
 
-        if(!sharedPrefHelper.isUserRegistered()) {
-            intentHelper.startRegistrationActivity();
+        if(!SharedPreferencesHelper.getInstance().isUserRegistered()) {
+            IntentHelper.getInstance().startRegistrationActivity();
         }
     }
 
     public void sectionDiagramSelected()
     {
-        intentHelper.startDiagramActivity();
+        IntentHelper.getInstance().startDiagramActivity();
     }
 
 

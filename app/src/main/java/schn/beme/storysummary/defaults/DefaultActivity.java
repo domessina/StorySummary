@@ -1,6 +1,8 @@
-package schn.beme.storysummary;
+package schn.beme.storysummary.defaults;
 
 import android.support.v7.app.AppCompatActivity;
+
+import schn.beme.storysummary.MyApplication;
 
 /**
  * Created by Dorito on 11-07-16.

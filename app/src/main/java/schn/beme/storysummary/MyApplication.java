@@ -14,6 +14,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        MyApplication.context = getApplicationContext();
+
     }
 
     public static synchronized void setCurntActivityContext(Context context)

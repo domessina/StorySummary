@@ -2,7 +2,6 @@ package schn.beme.storysummary.presenterhelper;
 
 import android.content.Intent;
 
-import schn.beme.storysummary.DefaultActionBarActivity;
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.diagram.DiagramActivity;
 import schn.beme.storysummary.registration.RegistrationActivity;
@@ -14,10 +13,30 @@ import schn.beme.storysummary.settings.SettingsActivity;
  */
 public class IntentHelper {
 
+    private Intent intent;
 
+
+    //-----------SINGLETON HOLDER METHODOLOGY---------------
+
+    private IntentHelper(){}
+
+    public static IntentHelper getInstance()
+    {
+        return IntentHelperHolder.instance;
+    }
+
+    private static class IntentHelperHolder
+    {
+        private final static IntentHelper instance = new IntentHelper();
+    }
+
+
+
+
+    //----------------WORKING METHODS---------------
 
     public void startRegistrationActivity(){
-       Intent intent= new Intent(MyApplication.getCurntActivityContext(), RegistrationActivity.class);
+       intent= new Intent(MyApplication.getCurntActivityContext(), RegistrationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         MyApplication.getCurntActivityContext().startActivity(intent);
     }
@@ -25,7 +44,7 @@ public class IntentHelper {
 //        finish();      //Calls are asych, startActivity() will be called
 
     public void startSectionChoiceActivity(){
-        Intent intent= new Intent(MyApplication.getCurntActivityContext(), SectionChoiceActivity.class);
+        intent= new Intent(MyApplication.getCurntActivityContext(), SectionChoiceActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         MyApplication.getCurntActivityContext().startActivity(intent);
     }
@@ -33,13 +52,13 @@ public class IntentHelper {
 
     public void startSettingsActivity()
     {
-        Intent intent= new Intent(MyApplication.getCurntActivityContext(), SettingsActivity.class);
+        intent= new Intent(MyApplication.getCurntActivityContext(), SettingsActivity.class);
         MyApplication.getCurntActivityContext().startActivity(intent);
     }
 
     public void startDiagramActivity()
     {
-        Intent intent = new Intent(MyApplication.getCurntActivityContext(), DiagramActivity.class);
+        intent = new Intent(MyApplication.getCurntActivityContext(), DiagramActivity.class);
         MyApplication.getCurntActivityContext().startActivity(intent);
     }
 

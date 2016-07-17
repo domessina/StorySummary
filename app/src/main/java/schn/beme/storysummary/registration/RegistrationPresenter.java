@@ -1,5 +1,7 @@
 package schn.beme.storysummary.registration;
 
+import android.content.Intent;
+
 import java.lang.ref.WeakReference;
 
 import schn.beme.storysummary.Presenter;
@@ -11,20 +13,16 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
  */
 public class RegistrationPresenter extends Presenter {
 
-    IntentHelper intentHelper;
-    SharedPreferencesHelper sharedPrefHelper;
 
     public RegistrationPresenter(View view)
     {
         super(view);
-        intentHelper=new IntentHelper();
-        sharedPrefHelper = new SharedPreferencesHelper();
     }
 
     public void fbBtnClicked()
     {
-        sharedPrefHelper.setUserRegistered(true);
-        intentHelper.startSectionChoiceActivity();
+        SharedPreferencesHelper.getInstance().setUserRegistered(true);
+        IntentHelper.getInstance().startSectionChoiceActivity();
     }
 
     public interface View extends Presenter.View

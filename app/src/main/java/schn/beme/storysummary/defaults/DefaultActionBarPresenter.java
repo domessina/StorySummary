@@ -1,5 +1,6 @@
-package schn.beme.storysummary;
+package schn.beme.storysummary.defaults;
 
+import schn.beme.storysummary.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
@@ -8,29 +9,25 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
  */
 public class DefaultActionBarPresenter extends Presenter {
 
-    private SharedPreferencesHelper sharedPrefHelper;
-    private IntentHelper intentHelper;
 
     public DefaultActionBarPresenter(View view) {
 
         super(view);
-        sharedPrefHelper=new SharedPreferencesHelper();
-        intentHelper= new IntentHelper();
     }
 
     public void registerUser()
     {
-        sharedPrefHelper.setUserRegistered(true);
+        SharedPreferencesHelper.getInstance().setUserRegistered(true);
     }
 
     public void unregisterUser()
     {
-        sharedPrefHelper.setUserRegistered(false);
+        SharedPreferencesHelper.getInstance().setUserRegistered(false);
     }
 
     public void actionSettings()
     {
-        intentHelper.startSettingsActivity();
+        IntentHelper.getInstance().startSettingsActivity();
     }
 
     public interface View extends Presenter.View
