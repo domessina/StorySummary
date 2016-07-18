@@ -5,8 +5,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardElevation="5dp"
-    android:layout_margin="1dp">
+    style="@style/AppTheme.CardView">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,12 +14,12 @@
         <TextView
             android:id="@+id/card_diagram_title"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:text="contact det"
             android:gravity="center_vertical"
             android:textColor="@android:color/white"
-            android:textSize="14sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/card_diagram_user"
@@ -28,9 +27,10 @@
             android:layout_height="wrap_content"
             android:text="Name"
             android:gravity="center_vertical"
-            android:textSize="10sp"
+            android:textSize="15sp"
             android:layout_below="@id/card_diagram_title"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"/>
 
 
     </RelativeLayout>

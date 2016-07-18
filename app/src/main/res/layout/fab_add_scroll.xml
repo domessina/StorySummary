@@ -2,12 +2,15 @@
 <android.support.design.widget.FloatingActionButton
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fab_scroll"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:id="@+id/fab_add_scroll"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|right"
     android:layout_margin="16dp"
+    app:backgroundTint="@color/colorAccent"
     app:fabSize="normal"
-    android:src="@drawable/icon_synch"
+    android:src="@android:drawable/ic_input_add"
     app:layout_anchorGravity="bottom|right|end"
+    android:tint="@color/white"
     app:layout_behavior="schn.beme.storysummary.ScrollFAB"/>

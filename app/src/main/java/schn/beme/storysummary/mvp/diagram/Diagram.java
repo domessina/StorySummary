@@ -5,7 +5,7 @@ package schn.beme.storysummary.mvp.diagram;
  */
 public class Diagram {
 
-
+    public int id;
     public int userId;
     public String title;
 }

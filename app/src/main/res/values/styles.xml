@@ -18,6 +18,11 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="AppTheme.CardView" parent="CardView">
+        <item name="cardElevation">5dp</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
     <style name="AppTheme.NoActionBar.AppBarOverlay"
            parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 

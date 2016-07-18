@@ -9,7 +9,7 @@ import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 
-public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View{
+public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View {
 
     private DiagramPresenter presenter;
 
@@ -23,17 +23,24 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter=new DiagramPresenter(this);
+        presenter = new DiagramPresenter(this);
         initContent();
     }
 
-    private void initContent()
-    {
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        presenter.onStart();
+    }
+
+    private void initContent() {
+
         initRecycleView();
     }
 
-    private void initRecycleView()
-    {
+    private void initRecycleView() {
+
         RecyclerView recyclerD = (RecyclerView) findViewById(R.id.recyclerDiagram);
         recyclerD.setHasFixedSize(true);
         LinearLayoutManager lLManager = new LinearLayoutManager(this);
@@ -44,7 +51,11 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         recyclerD.setAdapter(ca);
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.onStop();
+    }
 
     @Override
     protected void onResume() {
@@ -52,9 +63,6 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         super.onResume();
         presenter = new DiagramPresenter(this);
     }
-
-
-
 
 
 }

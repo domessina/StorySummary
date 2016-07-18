@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.eventbusmsg.ClickCardDiagramEvent;
 
 /**
  * Created by Dorito on 17-07-16.
@@ -52,6 +55,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
         Diagram ci = contactList.get(i);
         diagramViewHolder.titleTv.setText(ci.title);
         diagramViewHolder.userIdTv.setText(String.valueOf(ci.userId));
+        diagramViewHolder.diagram=ci;
     }
 
 
@@ -59,12 +63,31 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
     public class DiagramViewHolder extends RecyclerView.ViewHolder {
         protected TextView titleTv;
         protected TextView userIdTv;
+        protected Diagram diagram;
 
         public DiagramViewHolder(View v) {
             super(v);
-            titleTv =  (TextView) v.findViewById(R.id.card_diagram_title);
+            initViews(v);
+            defineActionOnClick(v);
 
+        }
+
+        private void initViews(View v)
+        {
+            titleTv =  (TextView) v.findViewById(R.id.card_diagram_title);
             userIdTv = (TextView) v.findViewById(R.id.card_diagram_user);
+        }
+
+        private void defineActionOnClick(final View v)
+        {
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id));
+                }
+            });
+
         }
     }
 }
