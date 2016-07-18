@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="schn.beme.storysummary.mvp.diagram.DiagramActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    tools:context="schn.beme.storysummary.diagram.DiagramActivity">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerDiagram"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <include
-        layout="@layout/toolbar"/>
-</RelativeLayout>
+    <include layout="@layout/fab_scroll"
+             app:layout_anchor="@id/recyclerDiagram"/>
 
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
     <!--android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"

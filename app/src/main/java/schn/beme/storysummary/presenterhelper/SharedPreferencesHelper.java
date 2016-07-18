@@ -16,6 +16,7 @@ public class SharedPreferencesHelper {
 
 
     //-----------SINGLETON HOLDER METHODOLOGY---------------
+/**this help us to win many KByte*/
 
     private SharedPreferencesHelper()
     {

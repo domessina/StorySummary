@@ -1,12 +1,7 @@
-package schn.beme.storysummary.sectionchoice;
+package schn.beme.storysummary.mvp.sectionchoice;
 
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-
-import java.lang.ref.WeakReference;
-
-import schn.beme.storysummary.Presenter;
+import schn.beme.storysummary.mvp.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 

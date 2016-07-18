@@ -1,4 +1,4 @@
-package schn.beme.storysummary.registration;
+package schn.beme.storysummary.mvp.registration;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +8,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.defaults.DefaultActivity;
+import schn.beme.storysummary.mvp.defaults.DefaultActivity;
 
 public class RegistrationActivity extends DefaultActivity implements RegistrationPresenter.View{
 

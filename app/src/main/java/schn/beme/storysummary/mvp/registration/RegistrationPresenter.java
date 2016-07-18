@@ -1,10 +1,6 @@
-package schn.beme.storysummary.registration;
+package schn.beme.storysummary.mvp.registration;
 
-import android.content.Intent;
-
-import java.lang.ref.WeakReference;
-
-import schn.beme.storysummary.Presenter;
+import schn.beme.storysummary.mvp.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 

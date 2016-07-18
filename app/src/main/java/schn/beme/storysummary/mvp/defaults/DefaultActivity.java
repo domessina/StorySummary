@@ -1,4 +1,4 @@
-package schn.beme.storysummary.defaults;
+package schn.beme.storysummary.mvp.defaults;
 
 import android.support.v7.app.AppCompatActivity;
 

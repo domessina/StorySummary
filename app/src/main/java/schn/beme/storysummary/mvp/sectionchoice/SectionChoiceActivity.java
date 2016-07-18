@@ -1,11 +1,11 @@
-package schn.beme.storysummary.sectionchoice;
+package schn.beme.storysummary.mvp.sectionchoice;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.defaults.DefaultActivity;
+import schn.beme.storysummary.mvp.defaults.DefaultActivity;
 
 public class SectionChoiceActivity extends DefaultActivity implements SectionChoicePresenter.View{
 

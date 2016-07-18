@@ -1,4 +1,4 @@
-package schn.beme.storysummary;
+package schn.beme.storysummary.mvp;
 
 import java.lang.ref.WeakReference;
 

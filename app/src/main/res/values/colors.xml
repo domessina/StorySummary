@@ -10,4 +10,6 @@
 
     <color name='white'>#FFFFFF</color>
     <color name='black'>#000000</color>
+
+    <!-- pas la peine de définir les couleurs banales car: @android:color/white-->
 </resources>

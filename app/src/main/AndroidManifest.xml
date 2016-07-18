@@ -10,27 +10,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name="schn.beme.storysummary.registration.RegistrationActivity"
+            android:name="schn.beme.storysummary.mvp.registration.RegistrationActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="schn.beme.storysummary.sectionchoice.SectionChoiceActivity">
+        <activity android:name="schn.beme.storysummary.mvp.sectionchoice.SectionChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--
+        specify theme is needed for to force to not using android actionbar theme
+        because  we use theretrocpompatibility actionbar in java code
+        -->
         <activity
-            android:name="schn.beme.storysummary.diagram.DiagramActivity"
+            android:name="schn.beme.storysummary.mvp.diagram.DiagramActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         <activity
-            android:name="schn.beme.storysummary.settings.SettingsActivity"
+            android:name="schn.beme.storysummary.mvp.settings.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name="schn.beme.storysummary.test.SolutionActivity">
-        </activity>
-
     </application>
 
 </manifest>

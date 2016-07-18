@@ -3,10 +3,10 @@ package schn.beme.storysummary.presenterhelper;
 import android.content.Intent;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.diagram.DiagramActivity;
-import schn.beme.storysummary.registration.RegistrationActivity;
-import schn.beme.storysummary.sectionchoice.SectionChoiceActivity;
-import schn.beme.storysummary.settings.SettingsActivity;
+import schn.beme.storysummary.mvp.diagram.DiagramActivity;
+import schn.beme.storysummary.mvp.registration.RegistrationActivity;
+import schn.beme.storysummary.mvp.sectionchoice.SectionChoiceActivity;
+import schn.beme.storysummary.mvp.settings.SettingsActivity;
 
 /**
  * Created by Dorito on 10-07-16.

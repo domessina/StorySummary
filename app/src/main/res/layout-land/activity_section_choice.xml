@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="horizontal"
     android:background="@color/colorPrimary"
-    tools:context="schn.beme.storysummary.sectionchoice.SectionChoiceActivity">
+    tools:context="schn.beme.storysummary.mvp.sectionchoice.SectionChoiceActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:id="@+id/social_section_img"
             android:src="@drawable/bookshare"
             android:layout_weight="1"
@@ -45,7 +45,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:id="@+id/diagram_section_img"
             android:src="@drawable/books"
             android:layout_weight="1"
