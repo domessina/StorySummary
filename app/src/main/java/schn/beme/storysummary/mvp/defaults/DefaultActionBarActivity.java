@@ -58,7 +58,7 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
 

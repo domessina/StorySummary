@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,17 +19,17 @@ import schn.beme.storysummary.eventbusmsg.ClickCardDiagramEvent;
  */
 public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
 
-    private List<Diagram> contactList;
+    private List<Diagram> diagramList;
 
-    public DiagramAdapter(List<Diagram> contactList) {
+    public DiagramAdapter(List<Diagram> diagramList) {
 
-        this.contactList = contactList;
+        this.diagramList = diagramList;
     }
 
     @Override
     public int getItemCount() {
 
-        return contactList.size();
+        return diagramList.size();
     }
 
 
@@ -52,11 +53,12 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
     @Override
     public void onBindViewHolder(DiagramViewHolder diagramViewHolder, int i) {
 
-        Diagram ci = contactList.get(i);
+        Diagram ci = diagramList.get(i);
         diagramViewHolder.titleTv.setText(ci.title);
         diagramViewHolder.userIdTv.setText(String.valueOf(ci.userId));
         diagramViewHolder.diagram=ci;
     }
+
 
 
     //---------------VIEW HOLDER--------------
@@ -69,6 +71,9 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
             super(v);
             initViews(v);
             defineActionOnClick(v);
+            //for showing contextual menu
+            //itemView is the view passed to super(v)
+            itemView.setLongClickable(true);
 
         }
 
@@ -78,16 +83,35 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
             userIdTv = (TextView) v.findViewById(R.id.card_diagram_user);
         }
 
-        private void defineActionOnClick(final View v)
+        private void defineActionOnClick(final View v) {
+
+          v.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+
+                  EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id,false,null));
+
+              }
+          });
+
+          v.setOnLongClickListener(new View.OnLongClickListener() {
+              @Override
+              public boolean onLongClick(View view) {
+                  EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id,true,DiagramViewHolder.this));
+                    //must  to return false, otherwise context menu doesn't appear
+                  return false;
+
+              }
+          });
+        }
+
+
+        public void removeDiagramItem()
         {
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id));
-                }
-            });
-
+            int pos=getAdapterPosition();
+            diagramList.remove(pos);
+            notifyItemRemoved(pos);
+            notifyItemRangeChanged(pos,diagramList.size());
         }
     }
 }

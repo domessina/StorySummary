@@ -3,6 +3,12 @@ package schn.beme.storysummary.mvp.diagram;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 
 import schn.beme.be.storysummary.R;
@@ -17,6 +23,7 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
     protected int getLayoutId() {
 
         return R.layout.activity_diagram;
+
     }
 
     @Override
@@ -24,6 +31,7 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
 
         super.onCreate(savedInstanceState);
         presenter = new DiagramPresenter(this);
+
         initContent();
     }
 
@@ -46,9 +54,10 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         LinearLayoutManager lLManager = new LinearLayoutManager(this);
         lLManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerD.setLayoutManager(lLManager);
+        recyclerD.setAdapter(presenter.getDiagramAdapter());
+        registerForContextMenu(recyclerD);
 
-        DiagramAdapter ca = new DiagramAdapter(presenter.createList(30));
-        recyclerD.setAdapter(ca);
+
     }
 
     @Override
@@ -61,9 +70,30 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
     protected void onResume() {
 
         super.onResume();
-        presenter = new DiagramPresenter(this);
     }
 
+    //----------------MENUS-------------------
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_default_menu, menu);
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.context_default_delete:
+                presenter.contextMenuDelete();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
 }
 
