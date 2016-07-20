@@ -59,6 +59,13 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
         diagramViewHolder.diagram=ci;
     }
 
+    public void addDiagramCard(Diagram d)
+    {
+        diagramList.add(d);
+        notifyItemInserted(diagramList.size()-1);
+    }
+
+
 
 
     //---------------VIEW HOLDER--------------
@@ -113,6 +120,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos,diagramList.size());
         }
+
     }
 }
 

@@ -1,6 +1,6 @@
 package schn.beme.storysummary.mvp.registration;
 
-import schn.beme.storysummary.mvp.Presenter;
+import schn.beme.storysummary.mvp.defaults.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
@@ -10,10 +10,6 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 public class RegistrationPresenter extends Presenter {
 
 
-    public RegistrationPresenter(View view)
-    {
-        super(view);
-    }
 
     public void fbBtnClicked()
     {

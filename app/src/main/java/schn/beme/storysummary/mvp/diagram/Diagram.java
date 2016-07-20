@@ -9,13 +9,12 @@ public class Diagram {
     public int userId;
     public String title;
 
-    @Override
-    public boolean equals(Object o)
+//    public Diagram(){}
+
+    public Diagram(int id, String title, int userId)
     {
-        if (o == null) return false;
-        if (!(o instanceof Diagram))return false;
-        if (o == this) return true;
-        if (this.id==((Diagram)o).id) return true;
-        return false;
+        this.id=id;
+        this.title=title;
+        this.userId=userId;
     }
 }

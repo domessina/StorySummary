@@ -1,6 +1,5 @@
 package schn.beme.storysummary.mvp.defaults;
 
-import schn.beme.storysummary.mvp.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 

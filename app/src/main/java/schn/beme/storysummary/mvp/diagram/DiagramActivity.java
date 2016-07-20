@@ -1,6 +1,7 @@
 package schn.beme.storysummary.mvp.diagram;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -18,6 +19,7 @@ import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View {
 
     private DiagramPresenter presenter;
+    private RecyclerView recyclerV;
 
     @Override
     protected int getLayoutId() {
@@ -31,7 +33,6 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
 
         super.onCreate(savedInstanceState);
         presenter = new DiagramPresenter(this);
-
         initContent();
     }
 
@@ -42,35 +43,44 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         presenter.onStart();
     }
 
-    private void initContent() {
-
-        initRecycleView();
-    }
-
-    private void initRecycleView() {
-
-        RecyclerView recyclerD = (RecyclerView) findViewById(R.id.recyclerDiagram);
-        recyclerD.setHasFixedSize(true);
-        LinearLayoutManager lLManager = new LinearLayoutManager(this);
-        lLManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerD.setLayoutManager(lLManager);
-        recyclerD.setAdapter(presenter.getDiagramAdapter());
-        registerForContextMenu(recyclerD);
-
-
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
         presenter.onStop();
     }
 
-    @Override
-    protected void onResume() {
+    private void initContent() {
 
-        super.onResume();
+        initRecycleView();
+        initFAB();
     }
+
+    private void initRecycleView() {
+
+        recyclerV = (RecyclerView) findViewById(R.id.recyclerDiagram);
+        recyclerV.setHasFixedSize(true);
+        LinearLayoutManager lLManager = new LinearLayoutManager(this);
+        lLManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerV.setLayoutManager(lLManager);
+        recyclerV.setAdapter(presenter.getDiagramAdapter());
+        registerForContextMenu(recyclerV);
+
+
+    }
+
+    private void initFAB()
+    {
+
+        FloatingActionButton fab= (FloatingActionButton) findViewById(R.id.fab_add_scroll);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.newDiagram();
+            }
+        });
+    }
+
+
 
     //----------------MENUS-------------------
     @Override
@@ -95,5 +105,12 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         }
     }
 
+    //----------INTERFACE VIEW -----------------
+
+
+    @Override
+    public void scrollToEnd() {
+        recyclerV.scrollToPosition(presenter.getLastPositionTotal());
+    }
 }
 

@@ -1,7 +1,7 @@
 package schn.beme.storysummary.mvp.sectionchoice;
 
 
-import schn.beme.storysummary.mvp.Presenter;
+import schn.beme.storysummary.mvp.defaults.Presenter;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
@@ -11,10 +11,6 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 public class SectionChoicePresenter extends Presenter {
 
 
-    public SectionChoicePresenter(View view)
-    {
-        super(view);
-    }
 
     public void viewInitialized()
     {

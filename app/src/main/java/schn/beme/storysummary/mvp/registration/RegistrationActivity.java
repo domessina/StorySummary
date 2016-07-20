@@ -19,8 +19,8 @@ public class RegistrationActivity extends DefaultActivity implements Registratio
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        presenter=new RegistrationPresenter();
         setContentView(R.layout.activity_registration);
-
         initViews();
     }
 
@@ -40,7 +40,6 @@ public class RegistrationActivity extends DefaultActivity implements Registratio
     protected void onResume()
     {
         super.onResume();
-        presenter=new RegistrationPresenter(this);
         sliderLayout.startAutoCycle();
     }
 

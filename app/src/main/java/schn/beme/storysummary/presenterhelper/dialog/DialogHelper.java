@@ -1,0 +1,60 @@
+package schn.beme.storysummary.presenterhelper.dialog;
+
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.widget.EditText;
+
+import schn.beme.storysummary.MyApplication;
+
+/**
+ * Created by Dorito on 19-07-16.
+ */
+public final class DialogHelper {
+
+    public static void showConfirm(String title, String msg, final ConfirmListener listener) {
+        new AlertDialog.Builder(MyApplication.getCurntActivityContext())
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        listener.accepted();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int id) {
+                        dialog.cancel();
+                        listener.canceled();
+                    }
+                }).show();
+    }
+
+
+    public static void showConfirmEditText(String title, String msg, final ConfirmEditListener listener)
+    {
+        final EditText edit= new EditText(MyApplication.getCurntActivityContext());
+        new AlertDialog.Builder(MyApplication.getCurntActivityContext())
+                .setTitle(title)
+                .setMessage(msg)
+                .setView(edit)
+                .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        listener.accepted(edit.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int id) {
+                        dialog.cancel();
+                        listener.canceled();
+                    }
+                }).show();
+    }
+
+
+
+}

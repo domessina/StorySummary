@@ -15,6 +15,7 @@ public class SectionChoiceActivity extends DefaultActivity implements SectionCho
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        presenter=new SectionChoicePresenter();
         setContentView(R.layout.activity_section_choice);
     }
 
@@ -22,7 +23,6 @@ public class SectionChoiceActivity extends DefaultActivity implements SectionCho
     protected void onResume()
     {
         super.onResume();
-        presenter=new SectionChoicePresenter(this);
         presenter.viewInitialized();
     }
 

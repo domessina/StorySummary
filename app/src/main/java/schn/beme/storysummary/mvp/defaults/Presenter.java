@@ -1,4 +1,4 @@
-package schn.beme.storysummary.mvp;
+package schn.beme.storysummary.mvp.defaults;
 
 import java.lang.ref.WeakReference;
 
@@ -13,6 +13,11 @@ public class Presenter {
     {
         this.view=new WeakReference<>(view);
     }
+
+    /**
+     * If the prensenter does not need to call methods of the view
+     * */
+    public Presenter(){}
 
     /**
      * use it carefully to prevent memory leak
