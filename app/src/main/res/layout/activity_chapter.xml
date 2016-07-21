@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="schn.beme.storysummary.mvp.diagram.DiagramActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <EditText
+        android:id="@+id/edit_diagram_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:selectAllOnFocus="false"
+        />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_chapter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <include layout="@layout/fab_add_scroll"
+                 app:layout_anchor="@id/recycler_chapter"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

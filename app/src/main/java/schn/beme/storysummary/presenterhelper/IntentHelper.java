@@ -1,6 +1,7 @@
 package schn.beme.storysummary.presenterhelper;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.diagram.DiagramActivity;
@@ -50,17 +51,15 @@ public class IntentHelper {
     }
 
 
-    public void startSettingsActivity()
+    public void startActivityNoFlags(Class<?> cls, Bundle bundle)
     {
-        intent= new Intent(MyApplication.getCurntActivityContext(), SettingsActivity.class);
+        intent= new Intent(MyApplication.getCurntActivityContext(), cls);
+        if(bundle!=null) intent.putExtras(bundle);
         MyApplication.getCurntActivityContext().startActivity(intent);
     }
 
-    public void startDiagramActivity()
-    {
-        intent = new Intent(MyApplication.getCurntActivityContext(), DiagramActivity.class);
-        MyApplication.getCurntActivityContext().startActivity(intent);
-    }
+
+
 
 
 }

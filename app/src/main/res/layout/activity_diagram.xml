@@ -17,12 +17,12 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerDiagram"
+        android:id="@+id/recycler_diagram"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <include layout="@layout/fab_add_scroll"
-             app:layout_anchor="@id/recyclerDiagram"/>
+             app:layout_anchor="@id/recycler_diagram"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

@@ -1,76 +1,83 @@
-package schn.beme.storysummary.mvp.diagram;
+package schn.beme.storysummary.mvp.chapter;
 
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import java.util.Set;
 
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
-import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 
-public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View {
+public class ChapterActivity extends DefaultActionBarActivity implements ChapterPresenter.View{
 
-    private DiagramPresenter presenter;
+    private ChapterPresenter presenter;
     private RecyclerView recyclerV;
+    public int diagramId=-1;
+    public String diagramTitle;
+    Set<String> s;
 
     @Override
     protected int getLayoutId() {
 
-        return R.layout.activity_diagram;
-
+        return R.layout.activity_chapter;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter = new DiagramPresenter(this);
-        initContent();
+        presenter=new ChapterPresenter(this);
+
+       initContent();
     }
 
     @Override
     protected void onStart() {
-
         super.onStart();
         presenter.onStart();
     }
 
     @Override
     protected void onStop() {
-
         super.onStop();
         presenter.onStop();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {
-
-    }
-
     private void initContent() {
 
-        initRecycleView();
+        getIntentData();
+
+        EditText diagramTitleTv = (EditText) findViewById(R.id.edit_diagram_title);
+        diagramTitleTv.setText(diagramTitle, TextView.BufferType.EDITABLE);
+
+        initRecyclerView();
         initFAB();
     }
 
-    private void initRecycleView() {
+    private void getIntentData()
+    {
+        s=getIntent().getExtras().keySet();
+        diagramId = getIntent().getExtras().getInt("diagramId");
+        diagramTitle = getIntent().getExtras().getString("diagramTitle");
+    }
 
-        recyclerV = (RecyclerView) findViewById(R.id.recycler_diagram);
+    private void initRecyclerView(){
+        recyclerV = (RecyclerView) findViewById(R.id.recycler_chapter);
         recyclerV.setHasFixedSize(true);
         LinearLayoutManager lLManager = new LinearLayoutManager(this);
         lLManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerV.setLayoutManager(lLManager);
-        recyclerV.setAdapter(presenter.getDiagramAdapter());
+        recyclerV.setAdapter(presenter.getChapterAdapter());
         registerForContextMenu(recyclerV);
-
 
     }
 
@@ -81,11 +88,10 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
             @Override
             public void onClick(View view) {
 
-                presenter.newDiagram();
+                presenter.newChapter();
             }
         });
     }
-
 
     //----------------MENUS-------------------
     @Override
@@ -111,13 +117,11 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         }
     }
 
-    //----------INTERFACE VIEW -----------------
-
 
     @Override
     public void scrollToEnd() {
 
         recyclerV.scrollToPosition(presenter.getLastPositionTotal());
     }
-}
 
+}

@@ -3,6 +3,7 @@ package schn.beme.storysummary.presenterhelper.dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import schn.beme.storysummary.MyApplication;
 
@@ -32,9 +33,10 @@ public final class DialogHelper {
     }
 
 
-    public static void showConfirmEditText(String title, String msg, final ConfirmEditListener listener)
+    public static void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditListener listener)
     {
         final EditText edit= new EditText(MyApplication.getCurntActivityContext());
+        edit.setMaxLines(1);
         new AlertDialog.Builder(MyApplication.getCurntActivityContext())
                 .setTitle(title)
                 .setMessage(msg)
@@ -42,8 +44,14 @@ public final class DialogHelper {
                 .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        listener.accepted(edit.getText().toString());
+                        if(!empty&&(edit.getText().toString().equals(""))) {
+                            Toast.makeText(MyApplication.getCurntActivityContext(), "Can not be empty", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            dialog.cancel();
+                            listener.accepted(edit.getText().toString());
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

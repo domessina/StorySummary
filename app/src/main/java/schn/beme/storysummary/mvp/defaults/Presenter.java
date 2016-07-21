@@ -2,6 +2,8 @@ package schn.beme.storysummary.mvp.defaults;
 
 import java.lang.ref.WeakReference;
 
+import schn.beme.storysummary.mvp.chapter.Chapter;
+
 /**
  * Created by Dorito on 11-07-16.
  */

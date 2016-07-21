@@ -1,14 +1,19 @@
 package schn.beme.storysummary.mvp.diagram;
 
+import android.os.Bundle;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import schn.beme.storysummary.eventbusmsg.ClickCardDiagramEvent;
+import schn.beme.storysummary.RemovableCardVH;
+import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
+import schn.beme.storysummary.mvp.chapter.ChapterActivity;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 import schn.beme.storysummary.StartAndStopAware;
+import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditListener;
 import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmListener;
@@ -19,7 +24,7 @@ import schn.beme.storysummary.presenterhelper.dialog.ConfirmListener;
 public class DiagramPresenter extends DefaultActionBarPresenter implements StartAndStopAware, ConfirmListener, ConfirmEditListener {
 
     private DiagramAdapter diagramAdapter;
-    private DiagramAdapter.DiagramViewHolder selectedHolder;
+    private RemovableCardVH selectedHolder;
     public int lastDiagramIdTouched;
 
     public DiagramPresenter(View view) {
@@ -34,11 +39,17 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
     }
 
     @Subscribe
-    public void onClickCardDiagramEvent(ClickCardDiagramEvent event)
+    public void onClickDiagramCardEvent(ClickDiagramCardEvent event)
     {
 
         lastDiagramIdTouched=event.diagramId;
         selectedHolder=event.holder;
+        if(!event.isLong){
+            Bundle bundle=new Bundle();
+            bundle.putInt("diagramId",event.diagramId);
+            bundle.putString("diagramTitle",event.diagramTitle);
+            IntentHelper.getInstance().startActivityNoFlags(ChapterActivity.class,bundle);
+        }
     }
 
 
@@ -70,13 +81,12 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     public void contextMenuDelete()
     {
-
         DialogHelper.showConfirm("Are you sure?",null,this);
     }
 
     @Override
     public void accepted() {
-        selectedHolder.removeDiagramItem();
+        selectedHolder.removeCard();
     }
 
 
@@ -84,7 +94,7 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     public void newDiagram()
     {
-        DialogHelper.showConfirmEditText("New Diagram", "Title", this);
+        DialogHelper.showConfirmEditText("New Diagram", "Title",false, this);
     }
 
     @Override

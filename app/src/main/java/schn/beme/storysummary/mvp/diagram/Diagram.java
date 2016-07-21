@@ -1,20 +1,17 @@
 package schn.beme.storysummary.mvp.diagram;
 
+import lombok.AllArgsConstructor;
+import lombok.Generated;
+import lombok.Getter;
+
 /**
  * Created by Dorito on 18-07-16.
  */
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class Diagram {
 
     public int id;
-    public int userId;
     public String title;
+    public int userId;
 
-//    public Diagram(){}
-
-    public Diagram(int id, String title, int userId)
-    {
-        this.id=id;
-        this.title=title;
-        this.userId=userId;
-    }
 }

@@ -1,5 +1,6 @@
 package schn.beme.storysummary.mvp.defaults;
 
+import schn.beme.storysummary.mvp.settings.SettingsActivity;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
@@ -26,7 +27,7 @@ public class DefaultActionBarPresenter extends Presenter {
 
     public void actionSettings()
     {
-        IntentHelper.getInstance().startSettingsActivity();
+        IntentHelper.getInstance().startActivityNoFlags(SettingsActivity.class,null);
     }
 
     public interface View extends Presenter.View

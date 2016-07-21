@@ -5,19 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.eventbusmsg.ClickCardDiagramEvent;
+import schn.beme.storysummary.RemovableCardVH;
+import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 
 /**
  * Created by Dorito on 17-07-16.
  */
-public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramViewHolder> {
+public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramCardVH> {
 
     private List<Diagram> diagramList;
 
@@ -35,28 +35,25 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
 
 
     @Override
-    public DiagramViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public DiagramCardVH onCreateViewHolder(ViewGroup viewGroup, int i) {
 
         /*LayoutInflater inflater = (LayoutInflater) MyApplication
                 .getCurntActivityContext()
                 .getSystemService( Context.LAYOUT_INFLATER_SERVICE );*/
 
         LayoutInflater inflater= LayoutInflater.from(viewGroup.getContext());
-
         View itemView = inflater.inflate(R.layout.card_diagram, viewGroup, false);
-
-
-        return new DiagramViewHolder(itemView);
+        return new DiagramCardVH(itemView);
     }
 
 
     @Override
-    public void onBindViewHolder(DiagramViewHolder diagramViewHolder, int i) {
+    public void onBindViewHolder(DiagramCardVH diagramVH, int i) {
 
         Diagram ci = diagramList.get(i);
-        diagramViewHolder.titleTv.setText(ci.title);
-        diagramViewHolder.userIdTv.setText(String.valueOf(ci.userId));
-        diagramViewHolder.diagram=ci;
+        diagramVH.titleTv.setText(ci.title);
+        diagramVH.userIdTv.setText(String.valueOf(ci.userId));
+        diagramVH.diagram=ci;
     }
 
     public void addDiagramCard(Diagram d)
@@ -69,12 +66,12 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
 
 
     //---------------VIEW HOLDER--------------
-    public class DiagramViewHolder extends RecyclerView.ViewHolder {
+    public class DiagramCardVH extends RecyclerView.ViewHolder implements RemovableCardVH {
         protected TextView titleTv;
         protected TextView userIdTv;
         protected Diagram diagram;
 
-        public DiagramViewHolder(View v) {
+        public DiagramCardVH(View v) {
             super(v);
             initViews(v);
             defineActionOnClick(v);
@@ -96,7 +93,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
               @Override
               public void onClick(View view) {
 
-                  EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id,false,null));
+                  EventBus.getDefault().post(new ClickDiagramCardEvent(diagram.id,diagram.title,false,null));
 
               }
           });
@@ -104,7 +101,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
           v.setOnLongClickListener(new View.OnLongClickListener() {
               @Override
               public boolean onLongClick(View view) {
-                  EventBus.getDefault().post(new ClickCardDiagramEvent(diagram.id,true,DiagramViewHolder.this));
+                  EventBus.getDefault().post(new ClickDiagramCardEvent(diagram.id,null,true,DiagramCardVH.this));
                     //must  to return false, otherwise context menu doesn't appear
                   return false;
 
@@ -112,15 +109,13 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramV
           });
         }
 
-
-        public void removeDiagramItem()
-        {
+        @Override
+        public void removeCard() {
             int pos=getAdapterPosition();
             diagramList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos,diagramList.size());
         }
-
     }
 }
 

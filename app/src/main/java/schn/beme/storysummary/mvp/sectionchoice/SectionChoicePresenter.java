@@ -2,6 +2,7 @@ package schn.beme.storysummary.mvp.sectionchoice;
 
 
 import schn.beme.storysummary.mvp.defaults.Presenter;
+import schn.beme.storysummary.mvp.diagram.DiagramActivity;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 
@@ -22,7 +23,7 @@ public class SectionChoicePresenter extends Presenter {
 
     public void sectionDiagramSelected()
     {
-        IntentHelper.getInstance().startDiagramActivity();
+        IntentHelper.getInstance().startActivityNoFlags(DiagramActivity.class,null);
     }
 
 
