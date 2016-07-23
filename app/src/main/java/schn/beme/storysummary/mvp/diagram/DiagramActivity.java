@@ -8,8 +8,6 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 
 import schn.beme.be.storysummary.R;
@@ -41,6 +39,18 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
 
         super.onStart();
         presenter.onStart();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        presenter.onPause();
     }
 
     @Override
@@ -81,7 +91,7 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
             @Override
             public void onClick(View view) {
 
-                presenter.newDiagram();
+                presenter.addDiagram();
             }
         });
     }

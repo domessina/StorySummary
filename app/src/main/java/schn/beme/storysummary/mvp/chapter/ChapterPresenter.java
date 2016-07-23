@@ -90,7 +90,7 @@ public class ChapterPresenter extends DefaultActionBarPresenter implements Confi
 
     //-----------ACTION CREATE DIAGRAM FAB---------------------
 
-    public void newChapter()
+    public void addChapter()
     {
         DialogHelper.showConfirmEditText("New Chapter", "Title",false, this);
     }

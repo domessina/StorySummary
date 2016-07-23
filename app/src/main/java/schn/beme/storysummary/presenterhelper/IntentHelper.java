@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.mvp.diagram.DiagramActivity;
 import schn.beme.storysummary.mvp.registration.RegistrationActivity;
 import schn.beme.storysummary.mvp.sectionchoice.SectionChoiceActivity;
-import schn.beme.storysummary.mvp.settings.SettingsActivity;
 
 /**
  * Created by Dorito on 10-07-16.
@@ -37,25 +35,25 @@ public class IntentHelper {
     //----------------WORKING METHODS---------------
 
     public void startRegistrationActivity(){
-       intent= new Intent(MyApplication.getCurntActivityContext(), RegistrationActivity.class);
+       intent= new Intent(MyApplication.getCrntActivityContext(), RegistrationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        MyApplication.getCurntActivityContext().startActivity(intent);
+        MyApplication.getCrntActivityContext().startActivity(intent);
     }
     //        startActivity(intent.FLAG_ACTIVITY_CLEAR_TOP); utiliser ça quand le compte est supprimé et revenir au début
 //        finish();      //Calls are asych, startActivity() will be called
 
     public void startSectionChoiceActivity(){
-        intent= new Intent(MyApplication.getCurntActivityContext(), SectionChoiceActivity.class);
+        intent= new Intent(MyApplication.getCrntActivityContext(), SectionChoiceActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        MyApplication.getCurntActivityContext().startActivity(intent);
+        MyApplication.getCrntActivityContext().startActivity(intent);
     }
 
 
     public void startActivityNoFlags(Class<?> cls, Bundle bundle)
     {
-        intent= new Intent(MyApplication.getCurntActivityContext(), cls);
+        intent= new Intent(MyApplication.getCrntActivityContext(), cls);
         if(bundle!=null) intent.putExtras(bundle);
-        MyApplication.getCurntActivityContext().startActivity(intent);
+        MyApplication.getCrntActivityContext().startActivity(intent);
     }
 
 

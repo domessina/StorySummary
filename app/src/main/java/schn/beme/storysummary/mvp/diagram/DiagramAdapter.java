@@ -38,7 +38,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
     public DiagramCardVH onCreateViewHolder(ViewGroup viewGroup, int i) {
 
         /*LayoutInflater inflater = (LayoutInflater) MyApplication
-                .getCurntActivityContext()
+                .getCrntActivityContext()
                 .getSystemService( Context.LAYOUT_INFLATER_SERVICE );*/
 
         LayoutInflater inflater= LayoutInflater.from(viewGroup.getContext());
@@ -52,7 +52,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
 
         Diagram ci = diagramList.get(i);
         diagramVH.titleTv.setText(ci.title);
-        diagramVH.userIdTv.setText(String.valueOf(ci.userId));
+        diagramVH.IdTv.setText(String.valueOf(ci.id));
         diagramVH.diagram=ci;
     }
 
@@ -68,7 +68,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
     //---------------VIEW HOLDER--------------
     public class DiagramCardVH extends RecyclerView.ViewHolder implements RemovableCardVH {
         protected TextView titleTv;
-        protected TextView userIdTv;
+        protected TextView IdTv;
         protected Diagram diagram;
 
         public DiagramCardVH(View v) {
@@ -84,7 +84,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
         private void initViews(View v)
         {
             titleTv =  (TextView) v.findViewById(R.id.card_diagram_title);
-            userIdTv = (TextView) v.findViewById(R.id.card_diagram_user);
+            IdTv = (TextView) v.findViewById(R.id.card_diagram_id);
         }
 
         private void defineActionOnClick(final View v) {
@@ -110,11 +110,13 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
         }
 
         @Override
-        public void removeCard() {
+        public Diagram removeCard() {
             int pos=getAdapterPosition();
+            Diagram d=diagramList.get(pos);
             diagramList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos,diagramList.size());
+            return d;
         }
     }
 }

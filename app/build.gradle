@@ -30,6 +30,10 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
 
+    //ORMLite version 4.49 not stable
+    compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '4.48'
+
+
     //lombock provided= not included in apk only used during compilation
     //android-apt gradle plugin assists in working with annotation processors
     provided "org.projectlombok:lombok:1.16.10"

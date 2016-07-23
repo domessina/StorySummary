@@ -5,5 +5,5 @@ package schn.beme.storysummary;
  */
 public interface RemovableCardVH {
 
-    void removeCard();
+    Object removeCard();
 }

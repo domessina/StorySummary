@@ -20,8 +20,7 @@ public class SharedPreferencesHelper {
 
     private SharedPreferencesHelper()
     {
-        sharedPref= MyApplication.getCurntActivityContext().getSharedPreferences("infos", Context.MODE_PRIVATE);
-        editor= sharedPref.edit();
+        sharedPref= MyApplication.getCrntActivityContext().getSharedPreferences("infos", Context.MODE_PRIVATE);
     }
 
     public static SharedPreferencesHelper getInstance()
@@ -42,6 +41,7 @@ public class SharedPreferencesHelper {
 
     public  void setUserRegistered(boolean registered)
     {
+        editor= sharedPref.edit();//vaut mieux le faire dans la meme méthode que le commi tou apply
         editor.putBoolean("registered",registered);
         editor.apply();  //faster than commit , because does not return boolean and is asynchronous(<>synchronized)
     }

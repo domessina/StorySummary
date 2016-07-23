@@ -1,7 +1,6 @@
 package schn.beme.storysummary.mvp.chapter;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,7 +87,7 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
             @Override
             public void onClick(View view) {
 
-                presenter.newChapter();
+                presenter.addChapter();
             }
         });
     }

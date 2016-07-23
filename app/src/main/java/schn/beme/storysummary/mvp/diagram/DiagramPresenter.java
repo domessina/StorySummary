@@ -2,13 +2,19 @@ package schn.beme.storysummary.mvp.diagram;
 
 import android.os.Bundle;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
+import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.RemovableCardVH;
+import schn.beme.storysummary.ResumeAndPauseAware;
+import schn.beme.storysummary.presenterhelper.DatabaseHelper;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 import schn.beme.storysummary.mvp.chapter.ChapterActivity;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
@@ -21,21 +27,56 @@ import schn.beme.storysummary.presenterhelper.dialog.ConfirmListener;
 /**
  * Created by Dorito on 11-07-16.
  */
-public class DiagramPresenter extends DefaultActionBarPresenter implements StartAndStopAware, ConfirmListener, ConfirmEditListener {
+public class DiagramPresenter extends DefaultActionBarPresenter implements StartAndStopAware, ResumeAndPauseAware, ConfirmListener, ConfirmEditListener {
 
     private DiagramAdapter diagramAdapter;
     private RemovableCardVH selectedHolder;
     public int lastDiagramIdTouched;
+    protected DatabaseHelper dbHelper;
+    protected Dao<Diagram,Integer> diagramDao;
 
     public DiagramPresenter(View view) {
 
         super(view);
-        diagramAdapter=new DiagramAdapter(createList(20));
+        initDBAccess();
+        diagramAdapter=new DiagramAdapter(createList());
     }
 
     @Override
     public void onStart() {
-        EventBus.getDefault().register(this);       //TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        EventBus.getDefault().register(this);                    //TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+    }
+
+    @Override
+    public void onResume() {
+        //if there is multiple threads who access this method,
+        //follow the doc (4.1 android basics .2),
+        if (diagramDao == null) {
+            initDBAccess();}
+    }
+
+    @Override
+    public void onPause() {
+        //each openhelpermanager.getHelper have to be associated with a
+        // releaseHelper(), see doc of this method
+        OpenHelperManager.releaseHelper();
+        dbHelper=null;
+        diagramDao=null;
+    }
+
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+    }
+
+    private  void initDBAccess(){
+        try {
+            dbHelper = OpenHelperManager.getHelper(MyApplication.getCrntActivityContext(), DatabaseHelper.class);
+            diagramDao=dbHelper.getDiagramDao();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
@@ -53,12 +94,20 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
     }
 
 
-    public List<Diagram> createList(int size) {
+    public List<Diagram> createList() {
 
-        List<Diagram> result = new ArrayList<>();
+        List<Diagram> result=null;
+      /*  List<Diagram> result = new ArrayList<>();
         for (int i=1; i <= size; i++) {
 
             result.add(new Diagram(i,"caca"+i,0));
+        }*/
+
+        try {
+            diagramDao=dbHelper.getDiagramDao();
+            result =diagramDao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return result;
@@ -66,10 +115,6 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
 
 
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-    }
 
     public DiagramAdapter getDiagramAdapter()
     {
@@ -86,13 +131,18 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     @Override
     public void accepted() {
-        selectedHolder.removeCard();
+        Diagram d=(Diagram)selectedHolder.removeCard();
+        try {
+            diagramDao.delete(d);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
     //-----------ACTION CREATE DIAGRAM FAB---------------------
 
-    public void newDiagram()
+    public void addDiagram()
     {
         DialogHelper.showConfirmEditText("New Diagram", "Title",false, this);
     }
@@ -100,7 +150,13 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
     @Override
     public void accepted(String input) {
 
-        diagramAdapter.addDiagramCard(new Diagram(diagramAdapter.getItemCount(),input,0));
+        Diagram d=new Diagram(-1,input,0);//even if i set 9000 ormlite changes the id during create()
+        try {
+            diagramDao.create(d);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        diagramAdapter.addDiagramCard(d);
         ((View)getView()).scrollToEnd();
     }
 
@@ -113,6 +169,8 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     @Override
     public void canceled(){}
+
+
 
     public interface View extends DefaultActionBarPresenter.View
     {

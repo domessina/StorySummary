@@ -101,11 +101,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         }
 
         @Override
-        public void removeCard() {
+        public Chapter removeCard() {
             int pos=getAdapterPosition();
+            Chapter c=chapterList.get(pos);
             chapterList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos,chapterList.size());
+            return c;
         }
     }
 

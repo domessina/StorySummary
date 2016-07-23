@@ -13,7 +13,7 @@ import schn.beme.storysummary.MyApplication;
 public final class DialogHelper {
 
     public static void showConfirm(String title, String msg, final ConfirmListener listener) {
-        new AlertDialog.Builder(MyApplication.getCurntActivityContext())
+        new AlertDialog.Builder(MyApplication.getCrntActivityContext())
                 .setTitle(title)
                 .setMessage(msg)
                 .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
@@ -35,9 +35,9 @@ public final class DialogHelper {
 
     public static void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditListener listener)
     {
-        final EditText edit= new EditText(MyApplication.getCurntActivityContext());
+        final EditText edit= new EditText(MyApplication.getCrntActivityContext());
         edit.setMaxLines(1);
-        new AlertDialog.Builder(MyApplication.getCurntActivityContext())
+        new AlertDialog.Builder(MyApplication.getCrntActivityContext())
                 .setTitle(title)
                 .setMessage(msg)
                 .setView(edit)
@@ -45,7 +45,7 @@ public final class DialogHelper {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if(!empty&&(edit.getText().toString().equals(""))) {
-                            Toast.makeText(MyApplication.getCurntActivityContext(), "Can not be empty", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MyApplication.getCrntActivityContext(), "Can not be empty", Toast.LENGTH_LONG).show();
                         }
                         else
                         {
