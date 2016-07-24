@@ -20,6 +20,24 @@ public class Diagram {
     @DatabaseField(columnName = "user_id")
     public int userId;
 
+
+    public Diagram(int id)
+    {
+        this.id=id;
+    }
+
     //ormLite need it
     public Diagram(){}
+
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj==this)
+            return true;
+        else if(this.id==((Diagram)obj).id)
+            return true;
+        else
+            return false;
+    }
 }

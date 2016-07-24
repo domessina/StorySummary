@@ -23,14 +23,30 @@ public class Chapter {
     public String title;
     @DatabaseField(columnName = "position")
     public int position;
+    @DatabaseField(columnName = "note", dataType = DataType.LONG_STRING)
+    public String note;
 
     //ORMLite only holds id field of diagram, so diagramId will have almost the size of an int
     @DatabaseField(columnName = "diagram_id", canBeNull = false, foreign = true, foreignAutoRefresh = true)
     public Diagram diagramId;
-    @DatabaseField(columnName = "note", dataType = DataType.LONG_STRING)
-    public String note;
 
+
+    public Chapter(int id){this.id=id;}
 
     //ormLite need it
     public Chapter(){}
+
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj==this)
+            return true;
+        else if(this.id==((Chapter)obj).id)
+            return true;
+        else
+            return false;
+    }
 }

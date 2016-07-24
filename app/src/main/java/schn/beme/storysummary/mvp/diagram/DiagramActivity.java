@@ -30,7 +30,7 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter = new DiagramPresenter(this);
+        presenter = new DiagramPresenter<DiagramPresenter.View>(this);
         initContent();
     }
 

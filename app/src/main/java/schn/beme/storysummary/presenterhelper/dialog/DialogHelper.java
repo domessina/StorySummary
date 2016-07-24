@@ -12,7 +12,7 @@ import schn.beme.storysummary.MyApplication;
  */
 public final class DialogHelper {
 
-    public static void showConfirm(String title, String msg, final ConfirmListener listener) {
+    public static void showConfirm(String title, String msg, final ConfirmDialogListener listener) {
         new AlertDialog.Builder(MyApplication.getCrntActivityContext())
                 .setTitle(title)
                 .setMessage(msg)
@@ -33,7 +33,7 @@ public final class DialogHelper {
     }
 
 
-    public static void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditListener listener)
+    public static void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditDialogListener listener)
     {
         final EditText edit= new EditText(MyApplication.getCrntActivityContext());
         edit.setMaxLines(1);

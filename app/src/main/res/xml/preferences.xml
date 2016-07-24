@@ -8,9 +8,13 @@
                             android:defaultValue="false"
                             android:summary="This option if selected will allow the application to check for latest versions."
                             android:key="applicationUpdates" />
-        <CheckBoxPreference android:title="Update diagrams"
+        <CheckBoxPreference android:title="Auto update diagrams"
                             android:defaultValue="false"
                             android:summary="At launch if network is enabled"
                             android:key="diagramsUpdates" />
+        <CheckBoxPreference android:title="Show that the changes are saved"
+                            android:defaultValue="true"
+                            android:summary="OVERWAAAATCH By a short message when activity is left"
+                            android:key="toastSaved" />
     </PreferenceCategory>
 </PreferenceScreen>

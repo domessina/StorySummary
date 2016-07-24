@@ -1,6 +1,5 @@
 package schn.beme.storysummary.mvp.diagram;
 
-import android.os.Bundle;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
@@ -14,20 +13,21 @@ import java.util.List;
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.ResumeAndPauseAware;
+import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.presenterhelper.DatabaseHelper;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 import schn.beme.storysummary.mvp.chapter.ChapterActivity;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 import schn.beme.storysummary.StartAndStopAware;
 import schn.beme.storysummary.presenterhelper.IntentHelper;
-import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditListener;
+import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
-import schn.beme.storysummary.presenterhelper.dialog.ConfirmListener;
+import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
 
 /**
  * Created by Dorito on 11-07-16.
  */
-public class DiagramPresenter extends DefaultActionBarPresenter implements StartAndStopAware, ResumeAndPauseAware, ConfirmListener, ConfirmEditListener {
+public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultActionBarPresenter<V> implements StartAndStopAware, ResumeAndPauseAware, ConfirmDialogListener, ConfirmEditDialogListener {
 
     private DiagramAdapter diagramAdapter;
     private RemovableCardVH selectedHolder;
@@ -35,7 +35,7 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
     protected DatabaseHelper dbHelper;
     protected Dao<Diagram,Integer> diagramDao;
 
-    public DiagramPresenter(View view) {
+    public DiagramPresenter(V view) {
 
         super(view);
         initDBAccess();
@@ -44,15 +44,24 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     @Override
     public void onStart() {
-        EventBus.getDefault().register(this);                    //TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        EventBus.getDefault().register(this);//TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        if(MyApplication.diagramToRefreshId!=-1){
+            try {
+                initDBAccess();
+                diagramAdapter.refreshCard(diagramDao.queryForId(MyApplication.diagramToRefreshId));
+            } catch (SQLException|SchnException e) {
+                e.printStackTrace();
+            }finally {
+                MyApplication.diagramToRefreshId=-1;
+            }
+        }
     }
 
     @Override
     public void onResume() {
         //if there is multiple threads who access this method,
         //follow the doc (4.1 android basics .2),
-        if (diagramDao == null) {
-            initDBAccess();}
+        if (diagramDao == null) {initDBAccess();}
     }
 
     @Override
@@ -86,10 +95,7 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
         lastDiagramIdTouched=event.diagramId;
         selectedHolder=event.holder;
         if(!event.isLong){
-            Bundle bundle=new Bundle();
-            bundle.putInt("diagramId",event.diagramId);
-            bundle.putString("diagramTitle",event.diagramTitle);
-            IntentHelper.getInstance().startActivityNoFlags(ChapterActivity.class,bundle);
+            IntentHelper.getInstance().startChapterActivity(ChapterActivity.class,event.diagramId,event.diagramTitle);
         }
     }
 
@@ -131,9 +137,9 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
 
     @Override
     public void accepted() {
-        Diagram d=(Diagram)selectedHolder.removeCard();
+        Integer inte=(Integer)selectedHolder.removeCard();
         try {
-            diagramDao.delete(d);
+            diagramDao.deleteById(inte);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,7 +163,7 @@ public class DiagramPresenter extends DefaultActionBarPresenter implements Start
             e.printStackTrace();
         }
         diagramAdapter.addDiagramCard(d);
-        ((View)getView()).scrollToEnd();
+        getView().scrollToEnd();
     }
 
     //-----------------------------------------------

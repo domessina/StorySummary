@@ -7,10 +7,10 @@ import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
 /**
  * Created by Dorito on 11-07-16.
  */
-public class DefaultActionBarPresenter extends Presenter {
+public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View> extends Presenter<V> {
 
 
-    public DefaultActionBarPresenter(View view) {
+    public DefaultActionBarPresenter(V view) {
 
         super(view);
     }
@@ -27,7 +27,7 @@ public class DefaultActionBarPresenter extends Presenter {
 
     public void actionSettings()
     {
-        IntentHelper.getInstance().startActivityNoFlags(SettingsActivity.class,null);
+        IntentHelper.getInstance().startActivityNoFlags(SettingsActivity.class);
     }
 
     public interface View extends Presenter.View

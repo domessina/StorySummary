@@ -23,7 +23,7 @@ public class SectionChoicePresenter extends Presenter {
 
     public void sectionDiagramSelected()
     {
-        IntentHelper.getInstance().startActivityNoFlags(DiagramActivity.class,null);
+        IntentHelper.getInstance().startActivityNoFlags(DiagramActivity.class);
     }
 
 

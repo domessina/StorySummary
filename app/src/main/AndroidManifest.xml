@@ -33,7 +33,9 @@
             android:name="schn.beme.storysummary.mvp.settings.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name="schn.beme.storysummary.mvp.chapter.ChapterActivity">
+        <activity android:name="schn.beme.storysummary.mvp.chapter.ChapterActivity"
+                  android:windowSoftInputMode="stateHidden">
+
         </activity>
     </application>
 

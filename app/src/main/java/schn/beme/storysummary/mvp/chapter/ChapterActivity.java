@@ -10,10 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 
 public class ChapterActivity extends DefaultActionBarActivity implements ChapterPresenter.View{
@@ -34,7 +36,8 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter=new ChapterPresenter(this);
+        getIntentData();
+        presenter=new ChapterPresenter<ChapterPresenter.View>(this,diagramId);
 
        initContent();
     }
@@ -52,12 +55,8 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     }
 
     private void initContent() {
-
-        getIntentData();
-
         EditText diagramTitleTv = (EditText) findViewById(R.id.edit_diagram_title);
         diagramTitleTv.setText(diagramTitle, TextView.BufferType.EDITABLE);
-
         initRecyclerView();
         initFAB();
     }
@@ -92,6 +91,17 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         });
     }
 
+    public void onClickSaveBtn(View v){
+        presenter.saveBtnClicked();
+    }
+
+    public void onClickUpDownBtn(View v){
+
+        boolean isDownBtn=(v.getId()==R.id.card_chapter_down);
+        presenter.downUpClicked(isDownBtn,(Integer)v.getTag());
+
+    }
+
     //----------------MENUS-------------------
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -121,6 +131,16 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     public void scrollToEnd() {
 
         recyclerV.scrollToPosition(presenter.getLastPositionTotal());
+    }
+
+    @Override
+    public String getDiagramTitle(){
+        return ((TextView)findViewById(R.id.edit_diagram_title)).getText().toString();
+    }
+
+    @Override
+    public void showToast(String text){
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
 }

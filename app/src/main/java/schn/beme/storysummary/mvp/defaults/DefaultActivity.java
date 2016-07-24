@@ -20,6 +20,13 @@ public class DefaultActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if(MyApplication.isCrntActivityCxtNull()){
+            MyApplication.setCrntActivityContext(this);
+        }
+    }
 
     @Override
     protected void onResume()

@@ -1,18 +1,24 @@
 package schn.beme.storysummary.mvp.chapter;
 
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.eventbusmsg.ClickChapterCardEvent;
+import schn.beme.storysummary.mvp.diagram.Diagram;
 
 /**
  * Created by Dorito on 20-07-16.
@@ -37,9 +43,13 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
     @Override
     public void onBindViewHolder(ChapterVH holder, int position) {
         Chapter c=chapterList.get(position);
+        holder.iButtonU.setTag(c.id);
+        holder.iButtonD.setTag(c.id);
+        holder.chapterId=c.id;
         holder.titleTv.setText(c.title);
-        holder.noteTv.setText(c.note);
-        holder.chapter=c;
+//        holder.noteTv.setText(c.note);
+        holder.noteTv.setText(String.valueOf(position));
+
     }
 
     public void addChapterCard(Chapter d)
@@ -47,6 +57,18 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         chapterList.add(d);
         notifyItemInserted(chapterList.size()-1);
     }
+
+    public int[] moveChapter(boolean toDown, int chapterId) throws IndexOutOfBoundsException{
+        int index1=chapterList.indexOf(new Chapter(chapterId));
+        int index2;
+        if(toDown) index2=index1+1;
+        else        index2=index1-1;
+        Collections.swap(chapterList,index1,index2);
+        notifyItemMoved(index1,index2);
+        //moved chapter from index1, to index2
+        return new int[]{index1,index2};
+    }
+
 
     @Override
     public int getItemCount() {
@@ -62,7 +84,9 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
 
         protected TextView titleTv;
         protected TextView noteTv;
-        protected Chapter chapter;
+        public int chapterId;
+        protected ImageButton iButtonD;
+        protected ImageButton iButtonU;
 
         public ChapterVH(View v)
         {
@@ -76,6 +100,8 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         {
             titleTv= (TextView) v.findViewById(R.id.card_chapter_title);
             noteTv=  (TextView) v.findViewById(R.id.card_chapter_note);
+            iButtonD=(ImageButton)v.findViewById(R.id.card_chapter_down);
+            iButtonU=(ImageButton)v.findViewById(R.id.card_chapter_up);
         }
 
         private void defineActionOnClick(final View v) {
@@ -84,7 +110,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
                 @Override
                 public void onClick(View view) {
 
-                    EventBus.getDefault().post(new ClickChapterCardEvent(chapter.id,false,null));
+                    EventBus.getDefault().post(new ClickChapterCardEvent(chapterId,false,null));
 
                 }
             });
@@ -92,7 +118,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             v.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    EventBus.getDefault().post(new ClickChapterCardEvent(chapter.id,true,ChapterVH.this));
+                    EventBus.getDefault().post(new ClickChapterCardEvent(chapterId,true,ChapterVH.this));
                     //must  to return false, otherwise context menu doesn't appear
                     return false;
 

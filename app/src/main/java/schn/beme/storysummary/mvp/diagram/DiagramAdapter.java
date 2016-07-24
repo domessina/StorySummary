@@ -12,6 +12,7 @@ import java.util.List;
 
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.RemovableCardVH;
+import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 
 /**
@@ -62,6 +63,15 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
         notifyItemInserted(diagramList.size()-1);
     }
 
+    public void refreshCard(Diagram d) throws SchnException {
+        int pos=diagramList.indexOf(new Diagram(d.id));
+        if(pos==-1)
+            throw new SchnException("diagram to refresh not found");
+        else{
+            diagramList.set(pos,d);
+            notifyItemChanged(pos);
+        }
+    }
 
 
 
@@ -109,15 +119,18 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
           });
         }
 
+
         @Override
-        public Diagram removeCard() {
+        public Integer removeCard() {
             int pos=getAdapterPosition();
-            Diagram d=diagramList.get(pos);
+            Integer inte=diagramList.get(pos).id;
             diagramList.remove(pos);
             notifyItemRemoved(pos);
             notifyItemRangeChanged(pos,diagramList.size());
-            return d;
+            return inte;
         }
+
+
     }
 }
 

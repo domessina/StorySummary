@@ -12,7 +12,7 @@ public class MyApplication extends Application {
 
 
     private static Context context;
-    private static DatabaseHelper dbHelper;
+    public static int diagramToRefreshId=-1;
 
     @Override
     public void onCreate() {

@@ -7,11 +7,11 @@ import schn.beme.storysummary.mvp.chapter.Chapter;
 /**
  * Created by Dorito on 11-07-16.
  */
-public class Presenter {
+public class Presenter<V extends Presenter.View> {
 
-    private WeakReference<View> view;
+    private WeakReference<V> view;
 
-    public Presenter(View view)
+    public Presenter(V view)
     {
         this.view=new WeakReference<>(view);
     }
@@ -27,7 +27,7 @@ public class Presenter {
      * of the view is an activity
      * @return the view
      */
-    public View getView()
+    public V getView()
     {
         if ( view != null )
             return view.get();

@@ -49,10 +49,19 @@ public class IntentHelper {
     }
 
 
-    public void startActivityNoFlags(Class<?> cls, Bundle bundle)
+    public void startActivityNoFlags(Class<?> cls)
     {
         intent= new Intent(MyApplication.getCrntActivityContext(), cls);
-        if(bundle!=null) intent.putExtras(bundle);
+        MyApplication.getCrntActivityContext().startActivity(intent);
+    }
+
+    public void startChapterActivity(Class<?> cls, int diagramId, String diagramTitle)
+    {
+        intent= new Intent(MyApplication.getCrntActivityContext(), cls);
+        Bundle bundle=new Bundle();
+        bundle.putInt("diagramId",diagramId);
+        bundle.putString("diagramTitle",diagramTitle);
+        intent.putExtras(bundle);
         MyApplication.getCrntActivityContext().startActivity(intent);
     }
 
