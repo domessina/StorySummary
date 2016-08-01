@@ -16,5 +16,9 @@
                             android:defaultValue="true"
                             android:summary="OVERWAAAATCH By a short message when activity is left"
                             android:key="toastSaved" />
+        <CheckBoxPreference android:title="Keep pictures"
+                            android:defaultValue="true"
+                            android:summary=" On external storage after uninstall"
+                            android:key="keepPictures" />
     </PreferenceCategory>
 </PreferenceScreen>

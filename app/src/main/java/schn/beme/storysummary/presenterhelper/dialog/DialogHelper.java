@@ -2,6 +2,7 @@ package schn.beme.storysummary.presenterhelper.dialog;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public final class DialogHelper {
     {
         final EditText edit= new EditText(MyApplication.getCrntActivityContext());
         edit.setMaxLines(1);
+        edit.setImeOptions(EditorInfo.IME_ACTION_DONE);
         new AlertDialog.Builder(MyApplication.getCrntActivityContext())
                 .setTitle(title)
                 .setMessage(msg)

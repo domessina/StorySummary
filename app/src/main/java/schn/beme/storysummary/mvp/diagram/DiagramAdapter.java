@@ -11,7 +11,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 
@@ -76,7 +75,7 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
 
 
     //---------------VIEW HOLDER--------------
-    public class DiagramCardVH extends RecyclerView.ViewHolder implements RemovableCardVH {
+    public class DiagramCardVH extends RecyclerView.ViewHolder {
         protected TextView titleTv;
         protected TextView IdTv;
         protected Diagram diagram;
@@ -120,7 +119,6 @@ public class DiagramAdapter extends RecyclerView.Adapter<DiagramAdapter.DiagramC
         }
 
 
-        @Override
         public Integer removeCard() {
             int pos=getAdapterPosition();
             Integer inte=diagramList.get(pos).id;

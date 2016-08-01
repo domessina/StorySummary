@@ -9,9 +9,11 @@
     <color name="colorSecondary">#C13100</color>
     <color name="colorSecondaryDark">#9B2700</color>
     <color name="colorAccent">#99CCCC</color>
+    <color name="colorBackgroundText">#BCF7F7</color>
 
     <color name='white'>#FFFFFF</color>
     <color name='black'>#000000</color>
+    <color name='blackTransparent'>#33000000</color>
 
     <!-- pas la peine de définir les couleurs banales car: @android:color/white-->
 </resources>

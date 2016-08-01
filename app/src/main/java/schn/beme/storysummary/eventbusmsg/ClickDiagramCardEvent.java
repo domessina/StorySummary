@@ -1,8 +1,5 @@
 package schn.beme.storysummary.eventbusmsg;
 
-import android.support.v7.widget.RecyclerView;
-
-import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.mvp.diagram.DiagramAdapter;
 
 /**
@@ -13,9 +10,9 @@ public class ClickDiagramCardEvent {
     public int diagramId;
     public String diagramTitle;
     public boolean isLong=false;
-    public RemovableCardVH holder;
+    public DiagramAdapter.DiagramCardVH holder;
 
-    public ClickDiagramCardEvent(int diagramId,String diagramTitle, boolean isLong, RemovableCardVH holder)
+    public ClickDiagramCardEvent(int diagramId,String diagramTitle, boolean isLong, DiagramAdapter.DiagramCardVH holder)
     {
      this.diagramId=diagramId;
         this.diagramTitle=diagramTitle;

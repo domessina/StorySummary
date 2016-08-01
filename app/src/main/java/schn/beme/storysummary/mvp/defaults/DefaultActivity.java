@@ -2,6 +2,7 @@ package schn.beme.storysummary.mvp.defaults;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import schn.beme.storysummary.MyApplication;
 
@@ -43,6 +44,12 @@ public class DefaultActivity extends AppCompatActivity {
     {
         super.onPause();
         MyApplication.setCrntActivityContext(null);
+    }
+
+
+    public void showToast(String msg) {
+
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }

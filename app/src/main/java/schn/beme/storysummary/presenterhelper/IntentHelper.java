@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import schn.beme.storysummary.MyApplication;
+import schn.beme.storysummary.mvp.chapter.ChapterActivity;
 import schn.beme.storysummary.mvp.registration.RegistrationActivity;
+import schn.beme.storysummary.mvp.scene.SceneActivity;
+import schn.beme.storysummary.mvp.scenecharacters.SceneCharactersActivity;
 import schn.beme.storysummary.mvp.sectionchoice.SectionChoiceActivity;
 
 /**
@@ -49,21 +52,34 @@ public class IntentHelper {
     }
 
 
-    public void startActivityNoFlags(Class<?> cls)
-    {
+    public void startActivityNoFlags(Class<?> cls) {
         intent= new Intent(MyApplication.getCrntActivityContext(), cls);
         MyApplication.getCrntActivityContext().startActivity(intent);
     }
 
-    public void startChapterActivity(Class<?> cls, int diagramId, String diagramTitle)
-    {
-        intent= new Intent(MyApplication.getCrntActivityContext(), cls);
-        Bundle bundle=new Bundle();
-        bundle.putInt("diagramId",diagramId);
-        bundle.putString("diagramTitle",diagramTitle);
-        intent.putExtras(bundle);
+    public void startChapterActivity(int diagramId, String diagramTitle) {
+        intent= new Intent(MyApplication.getCrntActivityContext(), ChapterActivity.class);
+        intent.putExtra("diagramId",diagramId);
+        intent.putExtra("diagramTitle",diagramTitle);
         MyApplication.getCrntActivityContext().startActivity(intent);
     }
+
+    public void startSceneActivity(int chapterId, String chapterTitle, String chapterNote) {
+        intent= new Intent(MyApplication.getCrntActivityContext(), SceneActivity.class);
+        intent.putExtra("chapterId",chapterId);
+        intent.putExtra("chapterNote",chapterNote);
+        intent.putExtra("chapterTitle",chapterTitle);
+        MyApplication.getCrntActivityContext().startActivity(intent);
+    }
+
+    public void startSceneCharactersActivity(int sceneId){
+        intent=new Intent(MyApplication.getCrntActivityContext(),SceneCharactersActivity.class);
+        intent.putExtra("sceneId",sceneId);
+        MyApplication.getCrntActivityContext().startActivity(intent);
+    }
+
+    //---------------END WORKING METHODS----------------
+
 
 
 

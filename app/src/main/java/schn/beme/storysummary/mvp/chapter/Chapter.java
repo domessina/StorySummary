@@ -21,7 +21,7 @@ public class Chapter {
     public short phase;     //TODO field private avec oremlite ça irait?
     @DatabaseField(columnName = "title")
     public String title;
-    @DatabaseField(columnName = "position")
+    @DatabaseField(columnName = "position",canBeNull = false)
     public int position;
     @DatabaseField(columnName = "note", dataType = DataType.LONG_STRING)
     public String note;

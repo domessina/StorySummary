@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.ResumeAndPauseAware;
 import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.presenterhelper.DatabaseHelper;
@@ -30,7 +29,7 @@ import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
 public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultActionBarPresenter<V> implements StartAndStopAware, ResumeAndPauseAware, ConfirmDialogListener, ConfirmEditDialogListener {
 
     private DiagramAdapter diagramAdapter;
-    private RemovableCardVH selectedHolder;
+    private DiagramAdapter.DiagramCardVH selectedHolder;
     public int lastDiagramIdTouched;
     protected DatabaseHelper dbHelper;
     protected Dao<Diagram,Integer> diagramDao;
@@ -95,7 +94,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.diagramId;
         selectedHolder=event.holder;
         if(!event.isLong){
-            IntentHelper.getInstance().startChapterActivity(ChapterActivity.class,event.diagramId,event.diagramTitle);
+            IntentHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
         }
     }
 

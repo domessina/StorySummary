@@ -1,5 +1,7 @@
 package schn.beme.storysummary.mvp.chapter;
 
+import android.util.Log;
+
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
@@ -7,12 +9,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.RemovableCardVH;
 import schn.beme.storysummary.ResumeAndPauseAware;
 import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.StartAndStopAware;
@@ -20,6 +22,7 @@ import schn.beme.storysummary.eventbusmsg.ClickChapterCardEvent;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 import schn.beme.storysummary.mvp.diagram.Diagram;
 import schn.beme.storysummary.presenterhelper.DatabaseHelper;
+import schn.beme.storysummary.presenterhelper.IntentHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
@@ -35,7 +38,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
     protected DatabaseHelper dbHelper;
     protected Dao<Chapter,Integer> chapterDao;
     private ChapterAdapter chapterAdapter;
-    private RemovableCardVH selectedHolder;
+    private ChapterAdapter.ChapterVH selectedHolder;
 
     public ChapterPresenter(V view, int diagramId) {
 
@@ -49,6 +52,16 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
     @Override
     public void onStart() {
         EventBus.getDefault().register(this);       //TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        if(MyApplication.chapterToRefreshId!=-1){
+            try {
+                initDBAccess();
+                chapterAdapter.refreshCard(chapterDao.queryForId(MyApplication.chapterToRefreshId));
+            } catch (SQLException|SchnException e) {
+                e.printStackTrace();
+            }finally {
+                MyApplication.chapterToRefreshId=-1;
+            }
+        }
     }
 
     @Override
@@ -60,7 +73,6 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     @Override
     public void onPause() {
-
         OpenHelperManager.releaseHelper();
         dbHelper=null;
         chapterDao=null;
@@ -86,8 +98,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.chapterId;
         selectedHolder=event.holder;
         if(!event.isLong) {
-//            IntentHelper.getInstance().startActivityNoFlags(ChapterActivity.class);
-//            chapterAdapter.moveChapter(11,12);
+            IntentHelper.getInstance().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
         }
     }
 
@@ -105,6 +116,13 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        //sorting by position
+        Comparator<Chapter> comparator = new Comparator<Chapter>() {
+            @Override
+            public int compare(Chapter chapter, Chapter t1) {
+                return chapter.position-t1.position;
+            }
+        };
         return result;
     }
 
@@ -113,27 +131,32 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
         try {
             Dao<Diagram,Integer>diagramDao=dbHelper.getDiagramDao();
-            Diagram d= new Diagram(diagramId);
+            Diagram d= diagramDao.queryForId(diagramId);
             d.title= getView().getDiagramTitle();
             diagramDao.update(d);
             MyApplication.diagramToRefreshId=diagramId;
             getView().showToast("Modifications saved");
         } catch (SQLException e) {
+            getView().showToast("A problem occurred");
+            Log.e("Error","Cannot update diagram id="+diagramId+" in database");
             e.printStackTrace();
         }
     }
 
     public void saveBtnClicked(){updateDiagramToDB();}
 
+    //-----------------UPSIDE DOWN CHAPTERS----------------
+
     public void downUpClicked(boolean toDown, int chapterId ){
 
         try{
             int positions[]= chapterAdapter.moveChapter(toDown,chapterId);
-
+            //position[0]=old pos of Chap Moved  1=old pos of Chap Replaced
             int diagramId=updatePositionChapterMoved(chapterId,positions[1]);
-            updatePositionChapterReplaced(diagramId,positions[0]);
-            chapterAdapter.notifyItemChanged(positions[0]);
+            updatePositionChapterReplaced(diagramId,positions[1],positions[0]);
+
             chapterAdapter.notifyItemChanged(positions[1]);
+            chapterAdapter.notifyItemChanged(positions[0]);
 
         }catch(IndexOutOfBoundsException|SQLException|SchnException e){
             //IndexOutofBound is when downbtn is pressed for the last item
@@ -141,7 +164,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
             e.printStackTrace();
         }
     }
-
+    //the one that triggered the motion
     private int updatePositionChapterMoved(int chapterId, int newPosition) throws SQLException{
         Chapter chap1=chapterDao.queryForId(chapterId);
         chap1.position=newPosition;
@@ -149,19 +172,20 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         return chap1.diagramId.id;
     }
 
-    private void updatePositionChapterReplaced(int diagramId, int newPosition)throws SQLException,SchnException{
+    private void updatePositionChapterReplaced(int diagramId,int oldPosition, int newPosition)throws SQLException,SchnException{
         Map<String, Object> chapterFields=new HashMap<>(2);
         chapterFields.put("diagram_id",diagramId);
-        chapterFields.put("position",newPosition);
+        chapterFields.put("position",oldPosition);
         List<Chapter> results=chapterDao.queryForFieldValues(chapterFields);
-        if(results.size()>1){
+        /*if(results.size()!=1){
             throw new SchnException("Have to be only one match with the query");
-        }
+        }*/
         Chapter chap2=results.get(0);
         chap2.position=newPosition;
         chapterDao.update(chap2);
     }
 
+    //-----------------END UPSIDE DOWN---------------
 
     public ChapterAdapter getChapterAdapter(){return this.chapterAdapter;}
 
@@ -185,7 +209,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     @Override
     public void accepted() {
-        Chapter c =(Chapter)selectedHolder.removeCard();
+        Chapter c =selectedHolder.removeCard();
         try {
             chapterDao.delete(c);
         } catch (SQLException e) {
@@ -203,7 +227,8 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
     @Override
     public void accepted(String input) {
 
-        Chapter c=new Chapter(-1,(short)0,input,0,"note",new Diagram(diagramId));
+        Chapter c=new Chapter(-1, (short)0, input,
+                chapterAdapter.getItemCount(), "Write your notes",new Diagram(diagramId));
         chapterAdapter.addChapterCard(c);
         try {
             chapterDao.create(c);

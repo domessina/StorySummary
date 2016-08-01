@@ -14,17 +14,17 @@ import android.widget.Toast;
 
 import java.util.Set;
 
+import schn.beme.be.storysummary.BuildConfig;
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 
 public class ChapterActivity extends DefaultActionBarActivity implements ChapterPresenter.View{
 
-    private ChapterPresenter presenter;
-    private RecyclerView recyclerV;
     public int diagramId=-1;
     public String diagramTitle;
-    Set<String> s;
+    private ChapterPresenter presenter;
+    private RecyclerView recyclerV;
 
     @Override
     protected int getLayoutId() {
@@ -63,9 +63,10 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
 
     private void getIntentData()
     {
-        s=getIntent().getExtras().keySet();
-        diagramId = getIntent().getExtras().getInt("diagramId");
-        diagramTitle = getIntent().getExtras().getString("diagramTitle");
+        diagramId = getIntent().getIntExtra("diagramId",-1);
+        diagramTitle = getIntent().getStringExtra("diagramTitle");
+        if(BuildConfig.DEBUG&&!(diagramId>-1))
+            throw new AssertionError("diagramId have to be >-1");
     }
 
     private void initRecyclerView(){
@@ -126,7 +127,7 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         }
     }
 
-
+    //-------END MENU-----------
     @Override
     public void scrollToEnd() {
 
@@ -138,9 +139,5 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         return ((TextView)findViewById(R.id.edit_diagram_title)).getText().toString();
     }
 
-    @Override
-    public void showToast(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
 
 }

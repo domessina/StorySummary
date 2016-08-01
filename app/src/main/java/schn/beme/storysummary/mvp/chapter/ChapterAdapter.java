@@ -1,13 +1,11 @@
 package schn.beme.storysummary.mvp.chapter;
 
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -15,10 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.RemovableCardVH;
+import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickChapterCardEvent;
-import schn.beme.storysummary.mvp.diagram.Diagram;
 
 /**
  * Created by Dorito on 20-07-16.
@@ -48,7 +44,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         holder.chapterId=c.id;
         holder.titleTv.setText(c.title);
 //        holder.noteTv.setText(c.note);
-        holder.noteTv.setText(String.valueOf(position));
+        holder.noteTv.setText(c.note);
 
     }
 
@@ -58,12 +54,28 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         notifyItemInserted(chapterList.size()-1);
     }
 
+    public void refreshCard(Chapter c) throws SchnException {
+        int pos=chapterList.indexOf(new Chapter(c.id));
+        if(pos==-1)
+            throw new SchnException("diagram to refresh not found");
+        else{
+            chapterList.set(pos,c);
+            notifyItemChanged(pos);
+        }
+    }
+
     public int[] moveChapter(boolean toDown, int chapterId) throws IndexOutOfBoundsException{
         int index1=chapterList.indexOf(new Chapter(chapterId));
         int index2;
         if(toDown) index2=index1+1;
         else        index2=index1-1;
         Collections.swap(chapterList,index1,index2);
+
+        //positions are updated in the list, next it will be in the db by presenter,
+        //which will call adapter.notifyItemChanged()
+        chapterList.get(index1).position=index1;
+        chapterList.get(index2).position=index2;
+
         notifyItemMoved(index1,index2);
         //moved chapter from index1, to index2
         return new int[]{index1,index2};
@@ -80,7 +92,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
     * *****************VIEW HOLDER ***************
     * */
 
-    public class ChapterVH extends RecyclerView.ViewHolder implements RemovableCardVH{
+    public class ChapterVH extends RecyclerView.ViewHolder {
 
         protected TextView titleTv;
         protected TextView noteTv;
@@ -110,7 +122,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
                 @Override
                 public void onClick(View view) {
 
-                    EventBus.getDefault().post(new ClickChapterCardEvent(chapterId,false,null));
+                    EventBus.getDefault().post(new ClickChapterCardEvent(chapterId,false,ChapterVH.this));
 
                 }
             });
@@ -126,7 +138,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             });
         }
 
-        @Override
+
         public Chapter removeCard() {
             int pos=getAdapterPosition();
             Chapter c=chapterList.get(pos);
@@ -135,6 +147,14 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             notifyItemRangeChanged(pos,chapterList.size());
             return c;
         }
+
+
+
+        public String getChapterTitle(){
+            return titleTv.getText().toString();
+        }
+
+        public String getChapterNote(){return noteTv.getText().toString();}
     }
 
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/llayout_scenec"
+
+    tools:context="schn.beme.storysummary.mvp.scenecharacters.SceneCharactersActivity">
+
+    <include layout="@layout/toolbar"/>
+
+
+    <EditText
+        android:id="@+id/edit_scenec_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="textCapWords"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackgroundText"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        >
+        <EditText
+            android:id="@+id/edit_scenec_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="7"
+            android:gravity="top"
+            android:background="@android:color/transparent"
+            />
+    </ScrollView>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Picture..."
+        android:onClick="onClickImportButton"/>
+
+    <TextView
+        android:id="@+id/text_scenec_picture_uri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="yiiiiiha"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickSaveButton"/>
+
+
+
+</LinearLayout>
