@@ -23,7 +23,7 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
 
     public int diagramId=-1;
     public String diagramTitle;
-    private ChapterPresenter presenter;
+    protected ChapterPresenter presenter;
     private RecyclerView recyclerV;
 
     @Override
@@ -40,6 +40,7 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         presenter=new ChapterPresenter<ChapterPresenter.View>(this,diagramId);
 
        initContent();
+        setTitle(R.string.title_activity_chapter);
     }
 
     @Override
@@ -55,8 +56,8 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     }
 
     private void initContent() {
-        EditText diagramTitleTv = (EditText) findViewById(R.id.edit_diagram_title);
-        diagramTitleTv.setText(diagramTitle, TextView.BufferType.EDITABLE);
+        EditText diagramTitleEdit = (EditText) findViewById(R.id.edit_diagram_title);
+        diagramTitleEdit.setText(diagramTitle, TextView.BufferType.EDITABLE);
         initRecyclerView();
         initFAB();
     }

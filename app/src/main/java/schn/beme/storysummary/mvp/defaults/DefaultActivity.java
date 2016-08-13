@@ -17,25 +17,25 @@ public class DefaultActivity extends AppCompatActivity {
     {
         super.onCreate(bundle);
         //needed for DBHelper in presenters before oncreate instantiate a prensenter
-        MyApplication.setCrntActivityContext(this);
+//        MyApplication.setAppContext(this);
     }
 
 
     @Override
     protected void onStart(){
         super.onStart();
-        if(MyApplication.isCrntActivityCxtNull()){
-            MyApplication.setCrntActivityContext(this);
-        }
+        /*if(MyApplication.isCrntActivityCxtNull()){
+            MyApplication.setAppContext(this);
+        }*/
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        if(MyApplication.isCrntActivityCxtNull()){
-            MyApplication.setCrntActivityContext(this);
-        }
+        /*if(MyApplication.isCrntActivityCxtNull()){
+            MyApplication.setAppContext(this);
+        }*/
     }
 
 
@@ -43,7 +43,13 @@ public class DefaultActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        MyApplication.setCrntActivityContext(null);
+//        MyApplication.setAppContext(null);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+//        MyApplication.setAppContext(null);
     }
 
 

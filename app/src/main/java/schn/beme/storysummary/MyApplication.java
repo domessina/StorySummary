@@ -3,8 +3,6 @@ package schn.beme.storysummary;
 import android.app.Application;
 import android.content.Context;
 
-import schn.beme.storysummary.presenterhelper.DatabaseHelper;
-
 /**
  * Created by Dorito on 10-07-16.
  */
@@ -18,7 +16,10 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        MyApplication.context = getApplicationContext();
+        //it's a better idea to keep it in a variable if I use Activity context
+        //here I don't but in case I change my mind, the var context will still be here
+        //http://stackoverflow.com/questions/7298731/when-to-call-activity-context-or-application-context
+        MyApplication.context = getApplicationContext();
         setConstraintDB();
     }
 
@@ -27,12 +28,14 @@ public class MyApplication extends Application {
 //        SQLiteDatabase sdldb=new SQLiteDatabase();
     }
 
-    public static synchronized void setCrntActivityContext(Context context)
+    /*
+    Si quelque chose ne va pas avec le contexte essaye d'utiliser celiu des activité comme avant
+    public static synchronized void setActivityContext(Context context)
     {
         MyApplication.context=context;
-    }
+    }*/
 
-    public static synchronized Context getCrntActivityContext() {
+    public static synchronized Context getAppContext() {
 
         if(context!=null) {
             return context;
@@ -41,7 +44,7 @@ public class MyApplication extends Application {
         }
     }
 
-    public static synchronized boolean isCrntActivityCxtNull()
+    public static synchronized boolean isAppContextNull()
     {
         return context==null;
     }

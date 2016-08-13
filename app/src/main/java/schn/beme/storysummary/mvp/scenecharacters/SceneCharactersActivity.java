@@ -2,11 +2,14 @@ package schn.beme.storysummary.mvp.scenecharacters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,10 +18,19 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
+
+import schn.beme.be.storysummary.BuildConfig;
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 
 public class SceneCharactersActivity extends DefaultActionBarActivity {
+
+    public int sceneId=-1;
+    public String sceneTitle;
+    public String sceneNote;
+    protected SceneCharactersPresenter presenter;
 
     @Override
     protected int getLayoutId() {
@@ -30,7 +42,26 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scene_characters);
+        getIntentData();
+        presenter=new SceneCharactersPresenter(this);
+        initContent();
+
+    }
+
+    private void getIntentData(){
+        sceneId=getIntent().getIntExtra("sceneId",-1);
+        sceneTitle=getIntent().getStringExtra("sceneTitle");
+        sceneNote=getIntent().getStringExtra("sceneNote");
+        if(BuildConfig.DEBUG&&!(sceneId>-1))
+            throw new AssertionError("sceneId have to be >-1");
+    }
+
+    private void initContent(){
+
+        EditText titleEdit=(EditText)findViewById(R.id.edit_scenec_title);
+        titleEdit.setText(sceneTitle);
+        EditText noteEdit=(EditText)findViewById(R.id.edit_scenec_note);
+        noteEdit.setText(sceneNote);
     }
 
     public void onClickSaveButton(View v){
@@ -40,10 +71,11 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
 
     //----------PICTURE IMPORTATION--------------
     public void onClickImportButton(View v){
-        performFileSearch();
+//        performFileSearchMethod1();
+        performFileSearchMethod2();
     }
 
-    public void performFileSearch() {
+    public void performFileSearchMethod1() {
 
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
         // browser.
@@ -62,6 +94,16 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
         intent.setType("image/*");
 
         startActivityForResult(intent, 42);
+
+
+    }
+
+    public void performFileSearchMethod2(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"),42);
     }
 
     @Override
@@ -69,7 +111,7 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
                                  Intent resultData) {
 
 
-//        ImageView img= (ImageView)findViewById(R.id.image_scenec_import);
+        ImageView img= (ImageView)findViewById(R.id.image_senec_import);
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
@@ -82,11 +124,17 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-                Log.i("pute", "Uri: " + uri.toString());
                 TextView tv=(TextView) findViewById(R.id.text_scenec_picture_uri);
                 tv.setText(uri.toString());
- /*               ImageView img=new ImageView(this);
-                Picasso.with(this).load(uri).into(img);*/
+                showToast(uri.getPath());
+                Bitmap mImageBitmap = null;
+                try {
+                    mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                img.setImageBitmap(mImageBitmap);
+//                Picasso.with(this).load .into(img);
 
             }
         }

@@ -1,37 +1,41 @@
 package schn.beme.storysummary.mvp.diagram;
 
 
+import android.util.Log;
+
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.ResumeAndPauseAware;
+import schn.beme.storysummary.ResumePauseAware;
 import schn.beme.storysummary.SchnException;
-import schn.beme.storysummary.presenterhelper.DatabaseHelper;
+import schn.beme.storysummary.narrativecomponent.Diagram;
+import schn.beme.storysummary.presenterhelper.data.OrmLiteDatabaseHelper;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
-import schn.beme.storysummary.mvp.chapter.ChapterActivity;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
-import schn.beme.storysummary.StartAndStopAware;
-import schn.beme.storysummary.presenterhelper.IntentHelper;
+import schn.beme.storysummary.StartStopAware;
+import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
-import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
+import schn.beme.storysummary.presenterhelper.dialog.DialogWindowHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
 
 /**
  * Created by Dorito on 11-07-16.
  */
-public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultActionBarPresenter<V> implements StartAndStopAware, ResumeAndPauseAware, ConfirmDialogListener, ConfirmEditDialogListener {
+public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultActionBarPresenter<V> implements StartStopAware, ResumePauseAware, ConfirmDialogListener, ConfirmEditDialogListener {
 
     private DiagramAdapter diagramAdapter;
     private DiagramAdapter.DiagramCardVH selectedHolder;
     public int lastDiagramIdTouched;
-    protected DatabaseHelper dbHelper;
+    protected OrmLiteDatabaseHelper dbHelper;
     protected Dao<Diagram,Integer> diagramDao;
 
     public DiagramPresenter(V view) {
@@ -43,7 +47,13 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
     @Override
     public void onStart() {
-        EventBus.getDefault().register(this);//TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        try {//in case of subscriver is already registered
+            EventBus.getDefault().register(this);
+        }
+        catch(EventBusException e){
+            e.printStackTrace();
+            Log.e("Error","see EventBus stackTrace");
+        }
         if(MyApplication.diagramToRefreshId!=-1){
             try {
                 initDBAccess();
@@ -79,12 +89,9 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
     }
 
     private  void initDBAccess(){
-        try {
-            dbHelper = OpenHelperManager.getHelper(MyApplication.getCrntActivityContext(), DatabaseHelper.class);
+
+            dbHelper = OpenHelperManager.getHelper(MyApplication.getAppContext(), OrmLiteDatabaseHelper.class);
             diagramDao=dbHelper.getDiagramDao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Subscribe
@@ -94,7 +101,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.diagramId;
         selectedHolder=event.holder;
         if(!event.isLong){
-            IntentHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
+            ActivityStarterHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
         }
     }
 
@@ -113,6 +120,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
             result =diagramDao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
+            return new ArrayList<>(0);
         }
 
         return result;
@@ -131,7 +139,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
     public void contextMenuDelete()
     {
-        DialogHelper.showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
     }
 
     @Override
@@ -149,7 +157,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
     public void addDiagram()
     {
-        DialogHelper.showConfirmEditText("New Diagram", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText("New Diagram", "Title",false, this);
     }
 
     @Override

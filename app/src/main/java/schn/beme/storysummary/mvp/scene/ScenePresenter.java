@@ -1,42 +1,40 @@
 package schn.beme.storysummary.mvp.scene;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.ResumeAndPauseAware;
-import schn.beme.storysummary.StartAndStopAware;
+import schn.beme.storysummary.ResumePauseAware;
+import schn.beme.storysummary.StartStopAware;
 import schn.beme.storysummary.eventbusmsg.ClickSceneCardEvent;
-import schn.beme.storysummary.mvp.chapter.Chapter;
-import schn.beme.storysummary.mvp.chapter.ChapterAdapter;
+import schn.beme.storysummary.narrativecomponent.Chapter;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
-import schn.beme.storysummary.presenterhelper.DatabaseHelper;
-import schn.beme.storysummary.presenterhelper.IntentHelper;
+import schn.beme.storysummary.narrativecomponent.Scene;
+import schn.beme.storysummary.presenterhelper.data.OrmLiteDatabaseHelper;
+import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
-import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
+import schn.beme.storysummary.presenterhelper.dialog.DialogWindowHelper;
 
 /**
  * Created by Dorito on 25-07-16.
  */
 public class ScenePresenter<V extends ScenePresenter.View> extends DefaultActionBarPresenter<V>
-        implements ResumeAndPauseAware, StartAndStopAware, ConfirmDialogListener,ConfirmEditDialogListener{
+        implements ResumePauseAware, StartStopAware, ConfirmDialogListener,ConfirmEditDialogListener{
 
 
 
     public int chapterId;
-    protected DatabaseHelper dbHelper;
+    protected OrmLiteDatabaseHelper dbHelper;
     protected Dao<Scene,Integer> sceneDao;
     private SceneAdapter sceneAdapter;
     private SceneAdapter.SceneVH selectedHolder;
@@ -52,7 +50,13 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
     @Override
     public void onStart() {
-        EventBus.getDefault().register(this);
+        try {//in case of subscriver is already registered
+            EventBus.getDefault().register(this);
+        }
+        catch(EventBusException e){
+            e.printStackTrace();
+            Log.e("Error","see EventBus stackTrace");
+        }
     }
 
 
@@ -78,12 +82,10 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
 
     private  void initDBAccess(){
-        try {
-            dbHelper = OpenHelperManager.getHelper(MyApplication.getCrntActivityContext(), DatabaseHelper.class);
+
+            dbHelper = OpenHelperManager.getHelper(MyApplication.getAppContext(), OrmLiteDatabaseHelper.class);
             sceneDao=dbHelper.getSceneDao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -92,7 +94,7 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
         selectedHolder=event.holder;
         if(!event.isLong) {
-            IntentHelper.getInstance().startSceneCharactersActivity(event.sceneId);
+            ActivityStarterHelper.getInstance().startSceneCharactersActivity(event.sceneId,event.holder.getSceneTitle(),event.holder.getSceneNote());
         }
     }
 
@@ -107,18 +109,12 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
             e.printStackTrace();
         }
         //sorting by position
-        Comparator<Scene> comparator = new Comparator<Scene>() {
-            @Override
-            public int compare(Scene chapter, Scene t1) {
-                return chapter.position-t1.position;
-            }
-        };
         return result;
     }
 
     //----------ADDING SCENE-------
     public void addScene(){
-        DialogHelper.showConfirmEditText("New Scene", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText("New Scene", "Title",false, this);
     }
 
     @Override
@@ -160,7 +156,7 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
     public void contextMenuDelete()
     {
-        DialogHelper.showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
     }
 
     @Override

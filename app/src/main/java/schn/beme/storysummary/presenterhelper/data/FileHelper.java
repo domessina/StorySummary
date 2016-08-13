@@ -1,4 +1,4 @@
-package schn.beme.storysummary.presenterhelper;
+package schn.beme.storysummary.presenterhelper.data;
 
 import java.io.File;
 
@@ -11,7 +11,7 @@ public class FileHelper {
 
     public static void createFile(String name){
 
-        File file = new File(MyApplication.getCrntActivityContext().getFilesDir(), name);
+        File file = new File(MyApplication.getAppContext().getFilesDir(), name);
     }
 
 }

@@ -1,34 +1,41 @@
-package schn.beme.storysummary.mvp.scene;
+package schn.beme.storysummary.narrativecomponent;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
 import lombok.AllArgsConstructor;
-import schn.beme.storysummary.mvp.chapter.Chapter;
 
 /**
  * Created by Dorito on 25-07-16.
  */
 @AllArgsConstructor(suppressConstructorProperties = true)
-public class Scene {
+public class Scene extends NarrativeComponent {
 
     @DatabaseField(generatedId = true, columnName = "id")
-    int id;
+    public int id;
     @DatabaseField(columnName = "chapter_id",
             canBeNull = false,foreign = true,
-            foreignAutoRefresh = true,
-            maxForeignAutoRefreshLevel = 1)//see third note of foreignautorefresh doc
-    Chapter chapterId;
+            foreignAutoRefresh = false)//see third note of foreignautorefresh doc maxForeignAutoRefreshLevel = 1
+    public Chapter chapterId;
     @DatabaseField(columnName = "position") //TODO rajouter canbeNull=false
-    int position;
+    public int position;
     @DatabaseField(columnName = "title")
-    String title;
+    public String title;
     @DatabaseField(columnName = "note",dataType = DataType.LONG_STRING)
-    String note;
+    public String note;
     @DatabaseField(columnName = "picture")
-    String picture;
+    public String picture;
 
     public Scene(int id){this.id=id;}
+
+   /* public Scene(int id, Chapter chapterId, int position, String title, String note, String picture){
+        this.id=id;
+        this.chapterId=chapterId;
+        this.position=position;
+        this.title=title;
+        this.note=note;
+        this.picture=picture;
+    }*/
 
     public Scene(){}
 

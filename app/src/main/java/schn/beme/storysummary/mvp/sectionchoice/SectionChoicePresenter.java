@@ -1,15 +1,15 @@
 package schn.beme.storysummary.mvp.sectionchoice;
 
 
-import schn.beme.storysummary.mvp.defaults.Presenter;
+import schn.beme.storysummary.mvp.defaults.DefaultPresenter;
 import schn.beme.storysummary.mvp.diagram.DiagramActivity;
-import schn.beme.storysummary.presenterhelper.IntentHelper;
-import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
+import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
+import schn.beme.storysummary.presenterhelper.data.SharedPreferencesHelper;
 
 /**
  * Created by Dorito on 10-07-16.
  */
-public class SectionChoicePresenter extends Presenter {
+public class SectionChoicePresenter extends DefaultPresenter {
 
 
 
@@ -17,17 +17,17 @@ public class SectionChoicePresenter extends Presenter {
     {
 
         if(!SharedPreferencesHelper.getInstance().isUserRegistered()) {
-            IntentHelper.getInstance().startRegistrationActivity();
+            ActivityStarterHelper.getInstance().startRegistrationActivity();
         }
     }
 
     public void sectionDiagramSelected()
     {
-        IntentHelper.getInstance().startActivityNoFlags(DiagramActivity.class);
+        ActivityStarterHelper.getInstance().startActivityNoFlags(DiagramActivity.class);
     }
 
 
-    public interface View extends Presenter.View{
+    public interface View extends DefaultPresenter.View{
 
     }
 }

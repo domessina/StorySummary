@@ -2,16 +2,14 @@ package schn.beme.storysummary.mvp.defaults;
 
 import java.lang.ref.WeakReference;
 
-import schn.beme.storysummary.mvp.chapter.Chapter;
-
 /**
  * Created by Dorito on 11-07-16.
  */
-public class Presenter<V extends Presenter.View> {
+public class DefaultPresenter<V extends DefaultPresenter.View> {
 
     private WeakReference<V> view;
 
-    public Presenter(V view)
+    public DefaultPresenter(V view)
     {
         this.view=new WeakReference<>(view);
     }
@@ -19,7 +17,7 @@ public class Presenter<V extends Presenter.View> {
     /**
      * If the prensenter does not need to call methods of the view
      * */
-    public Presenter(){}
+    public DefaultPresenter(){}
 
     /**
      * use it carefully to prevent memory leak

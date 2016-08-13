@@ -1,7 +1,9 @@
 package schn.beme.storysummary.mvp.defaults;
 
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +28,7 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //contentView forced to be set here, and not in the inherited activity of this class. It crashes otherwise
+        //contentView forced to be set here, and not in the inherited activity of this class. otherwise it crashes
         setContentView(getLayoutId());
         initToolBar();
     }
@@ -39,9 +41,11 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
             setSupportActionBar(toolbar);
             //may produce nullPointerexception
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+
             getSupportActionBar().setDisplayUseLogoEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
         catch (NullPointerException e) {
             e.printStackTrace();

@@ -32,8 +32,11 @@ public class ScrollFAB extends FloatingActionButton.Behavior {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed,
                 dyUnconsumed);
 
+        //if we go downward and the button is visible=>hide it
         if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
             child.hide();
+            //if we go upward (less than 0 because backward in the axis) and the
+            //FAB is hide=>show it
         } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
             child.show();
         }

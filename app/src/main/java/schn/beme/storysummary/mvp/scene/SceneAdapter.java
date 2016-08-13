@@ -7,14 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.eventbusmsg.ClickSceneCardEvent;
+import schn.beme.storysummary.narrativecomponent.Scene;
 
 /**
  * Created by Dorito on 29-07-16.

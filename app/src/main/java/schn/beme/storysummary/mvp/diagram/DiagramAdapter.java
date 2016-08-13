@@ -13,6 +13,7 @@ import java.util.List;
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
+import schn.beme.storysummary.narrativecomponent.Diagram;
 
 /**
  * Created by Dorito on 17-07-16.

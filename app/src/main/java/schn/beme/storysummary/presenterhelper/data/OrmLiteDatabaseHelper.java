@@ -1,8 +1,7 @@
-package schn.beme.storysummary.presenterhelper;
+package schn.beme.storysummary.presenterhelper.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -11,18 +10,18 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.mvp.chapter.Chapter;
-import schn.beme.storysummary.mvp.diagram.Diagram;
-import schn.beme.storysummary.mvp.scene.Scene;
+import schn.beme.storysummary.narrativecomponent.Chapter;
+import schn.beme.storysummary.narrativecomponent.Diagram;
+import schn.beme.storysummary.narrativecomponent.Scene;
+import schn.beme.storysummary.presenterhelper.Helper;
 
 /**
  * Created by Dorito on 22-07-16.
  */
-public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements Helper.Database {
 
     private static final String DATABASE_NAME = "schn.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     private Dao<Diagram, Integer> diagramDao;
     private Dao<Chapter, Integer> chapterDao;
@@ -30,7 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 
 
-     public DatabaseHelper(Context context) {
+     public OrmLiteDatabaseHelper(Context context) {
 //         super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
          super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
@@ -38,8 +37,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
+
+            //for ON DELETE CASCADE before creating tables
+            database.setForeignKeyConstraintsEnabled(true);
+
             TableUtils.createTable(connectionSource, Diagram.class);
             TableUtils.createTable(connectionSource, Chapter.class);
+            TableUtils.createTable(connectionSource, Scene.class);
+
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -49,41 +54,49 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
 
-        try {
+/*        try {
             if (oldVersion < 2) {
 //                dao.executeRaw("ALTER TABLE `account` ADD COLUMN age INTEGER;");
-                TableUtils.createTable(connectionSource, Scene.class);
 
             }
-            if (oldVersion < 3) //and not else if !
+            if (oldVersion < 4) //and not else if !
             {
 
             }
 
         }catch (SQLException e) {
-            Log.e(DatabaseHelper.class.getName(), "Unable to upgrade database from version " + oldVersion + " to new "
+            Log.e(OrmLiteDatabaseHelper.class.getName(), "Unable to upgrade database from version " + oldVersion + " to new "
                     + newVersion, e);
-        }
+        }*/
     }
 
 
-    public Dao<Diagram, Integer> getDiagramDao() throws SQLException {
+    @Override
+    public Dao<Diagram, Integer> getDiagramDao()  {
         if (diagramDao == null) {
-            diagramDao = getDao(Diagram.class);
+
+            try{diagramDao = getDao(Diagram.class);}
+            catch (SQLException e){e.printStackTrace();}
         }
         return diagramDao ;
     }
 
-    public Dao<Chapter, Integer> getChapterDao() throws SQLException {
+    @Override
+    public Dao<Chapter, Integer> getChapterDao()  {
         if (chapterDao == null) {
-            chapterDao = getDao(Chapter.class);
+
+            try{chapterDao = getDao(Chapter.class);}
+            catch (SQLException e){e.printStackTrace();}
         }
         return chapterDao ;
     }
 
-    public Dao<Scene, Integer> getSceneDao() throws SQLException {
+    @Override
+    public Dao<Scene, Integer> getSceneDao()  {
         if (sceneDao == null) {
-            sceneDao = getDao(Scene.class);
+
+            try{ sceneDao = getDao(Scene.class);}
+            catch (SQLException e){e.printStackTrace();}
         }
         return sceneDao ;
     }

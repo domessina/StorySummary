@@ -35,7 +35,7 @@ public class SceneActivity extends DefaultActionBarActivity implements ScenePres
     public int chapterId;
     public String chapterTitle;
     public String chapterNote;
-    private ScenePresenter<SceneActivity> presenter;
+    protected ScenePresenter<SceneActivity> presenter;
     private RecyclerView recyclerV;
 
     @Override
@@ -51,6 +51,7 @@ public class SceneActivity extends DefaultActionBarActivity implements ScenePres
         getIntentData();
         presenter=new ScenePresenter<>(this,chapterId);
         initContent();
+        setTitle(R.string.title_activity_scene);
     }
 
     @Override

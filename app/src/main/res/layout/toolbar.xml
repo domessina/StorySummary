@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorPrimary"
+    app:titleTextColor="@android:color/white"
     app:contentInsetLeft="0dp"
     app:contentInsetStart="0dp"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"

@@ -1,4 +1,4 @@
-package schn.beme.storysummary.presenterhelper;
+package schn.beme.storysummary.presenterhelper.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,8 +10,8 @@ import schn.beme.storysummary.MyApplication;
  */
 public class SharedPreferencesHelper {
 
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
+    private final SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
 
 
 
@@ -20,7 +20,7 @@ public class SharedPreferencesHelper {
 
     private SharedPreferencesHelper()
     {
-        sharedPref= MyApplication.getCrntActivityContext().getSharedPreferences("infos", Context.MODE_PRIVATE);
+        sharedPref= MyApplication.getAppContext().getSharedPreferences("infos", Context.MODE_PRIVATE);
     }
 
     public static SharedPreferencesHelper getInstance()

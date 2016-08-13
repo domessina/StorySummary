@@ -16,7 +16,7 @@ import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 
 public class DiagramActivity extends DefaultActionBarActivity implements DefaultActionBarPresenter.View, DiagramPresenter.View {
 
-    private DiagramPresenter presenter;
+    protected DiagramPresenter presenter;
     private RecyclerView recyclerV;
 
     @Override
@@ -32,6 +32,7 @@ public class DiagramActivity extends DefaultActionBarActivity implements Default
         super.onCreate(savedInstanceState);
         presenter = new DiagramPresenter<DiagramPresenter.View>(this);
         initContent();
+        setTitle(R.string.title_activity_diagram);
     }
 
     @Override

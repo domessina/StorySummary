@@ -15,6 +15,7 @@ import java.util.List;
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickChapterCardEvent;
+import schn.beme.storysummary.narrativecomponent.Chapter;
 
 /**
  * Created by Dorito on 20-07-16.
@@ -43,7 +44,6 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         holder.iButtonD.setTag(c.id);
         holder.chapterId=c.id;
         holder.titleTv.setText(c.title);
-//        holder.noteTv.setText(c.note);
         holder.noteTv.setText(c.note);
 
     }
@@ -54,7 +54,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         notifyItemInserted(chapterList.size()-1);
     }
 
-    public void refreshCard(Chapter c) throws SchnException {
+    public void updateContent(Chapter c) throws SchnException {
         int pos=chapterList.indexOf(new Chapter(c.id));
         if(pos==-1)
             throw new SchnException("diagram to refresh not found");
@@ -64,21 +64,18 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
         }
     }
 
-    public int[] moveChapter(boolean toDown, int chapterId) throws IndexOutOfBoundsException{
-        int index1=chapterList.indexOf(new Chapter(chapterId));
-        int index2;
-        if(toDown) index2=index1+1;
-        else        index2=index1-1;
-        Collections.swap(chapterList,index1,index2);
-
-        //positions are updated in the list, next it will be in the db by presenter,
-        //which will call adapter.notifyItemChanged()
-        chapterList.get(index1).position=index1;
-        chapterList.get(index2).position=index2;
-
-        notifyItemMoved(index1,index2);
+    public int[] getNewFuturePositions(boolean toDown, int chapterId){
+        int[] indexes=new int[2];
+        indexes[0]=chapterList.indexOf(new Chapter(chapterId));
+        indexes[1]=toDown?(indexes[0]+1):(indexes[0]-1);
         //moved chapter from index1, to index2
-        return new int[]{index1,index2};
+        return indexes;
+    }
+
+    public void swapChapter(int index1, int index2) throws IndexOutOfBoundsException{
+
+        Collections.swap(chapterList,index1,index2);
+        notifyItemMoved(index1,index2);
     }
 
 
@@ -108,7 +105,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ChapterV
             itemView.setLongClickable(true);
         }
 
-        private void initViews(View v)
+            private void initViews(View v)
         {
             titleTv= (TextView) v.findViewById(R.id.card_chapter_title);
             noteTv=  (TextView) v.findViewById(R.id.card_chapter_note);

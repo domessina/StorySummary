@@ -1,13 +1,13 @@
 package schn.beme.storysummary.mvp.defaults;
 
 import schn.beme.storysummary.mvp.settings.SettingsActivity;
-import schn.beme.storysummary.presenterhelper.IntentHelper;
-import schn.beme.storysummary.presenterhelper.SharedPreferencesHelper;
+import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
+import schn.beme.storysummary.presenterhelper.data.SharedPreferencesHelper;
 
 /**
  * Created by Dorito on 11-07-16.
  */
-public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View> extends Presenter<V> {
+public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View> extends DefaultPresenter<V> {
 
 
     public DefaultActionBarPresenter(V view) {
@@ -27,10 +27,10 @@ public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View>
 
     public void actionSettings()
     {
-        IntentHelper.getInstance().startActivityNoFlags(SettingsActivity.class);
+        ActivityStarterHelper.getInstance().startActivityNoFlags(SettingsActivity.class);
     }
 
-    public interface View extends Presenter.View
+    public interface View extends DefaultPresenter.View
     {
 
     }

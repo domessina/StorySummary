@@ -2,7 +2,7 @@
 # generated on 2016/07/23 05:03:32
 #
 # --table-start--
-dataClass=schn.beme.storysummary.mvp.diagram.Diagram
+dataClass=schn.beme.storysummary.narrativecomponent.Diagram
 tableName=diagram
 # --table-fields-start--
 # --field-start--
@@ -22,7 +22,7 @@ columnName=user_id
 # --table-end--
 #################################
 # --table-start--
-dataClass=schn.beme.storysummary.mvp.chapter.Chapter
+dataClass=schn.beme.storysummary.narrativecomponent.Chapter
 tableName=chapter
 # --table-fields-start--
 # --field-start--

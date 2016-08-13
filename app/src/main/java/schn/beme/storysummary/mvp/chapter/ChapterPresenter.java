@@ -6,36 +6,38 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.sql.SQLException;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import schn.beme.storysummary.MyApplication;
-import schn.beme.storysummary.ResumeAndPauseAware;
+import schn.beme.storysummary.ResumePauseAware;
 import schn.beme.storysummary.SchnException;
-import schn.beme.storysummary.StartAndStopAware;
+import schn.beme.storysummary.StartStopAware;
 import schn.beme.storysummary.eventbusmsg.ClickChapterCardEvent;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
-import schn.beme.storysummary.mvp.diagram.Diagram;
-import schn.beme.storysummary.presenterhelper.DatabaseHelper;
-import schn.beme.storysummary.presenterhelper.IntentHelper;
+import schn.beme.storysummary.narrativecomponent.Chapter;
+import schn.beme.storysummary.narrativecomponent.Diagram;
+import schn.beme.storysummary.presenterhelper.data.OrmLiteDatabaseHelper;
+import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
-import schn.beme.storysummary.presenterhelper.dialog.DialogHelper;
+import schn.beme.storysummary.presenterhelper.dialog.DialogWindowHelper;
 
 /**
  * Created by Dorito on 20-07-16.
  */
 public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultActionBarPresenter<V>
-        implements ConfirmDialogListener, ConfirmEditDialogListener, StartAndStopAware, ResumeAndPauseAware {
+        implements ConfirmDialogListener, ConfirmEditDialogListener, StartStopAware, ResumePauseAware {
 
     public int lastDiagramIdTouched;
     public int diagramId;
-    protected DatabaseHelper dbHelper;
+    protected OrmLiteDatabaseHelper dbHelper;
     protected Dao<Chapter,Integer> chapterDao;
     private ChapterAdapter chapterAdapter;
     private ChapterAdapter.ChapterVH selectedHolder;
@@ -51,11 +53,17 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     @Override
     public void onStart() {
-        EventBus.getDefault().register(this);       //TODO quand utiliser unregister(this) pour les presenters? car dans les fragments et ac c'est dans onstart et onstop
+        try {//in case of subscriver is already registered
+            EventBus.getDefault().register(this);
+        }
+        catch(EventBusException e){
+            e.printStackTrace();
+            Log.e("Error","see EventBus stackTrace");
+        }
         if(MyApplication.chapterToRefreshId!=-1){
             try {
                 initDBAccess();
-                chapterAdapter.refreshCard(chapterDao.queryForId(MyApplication.chapterToRefreshId));
+                chapterAdapter.updateContent(chapterDao.queryForId(MyApplication.chapterToRefreshId));
             } catch (SQLException|SchnException e) {
                 e.printStackTrace();
             }finally {
@@ -85,12 +93,8 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
 
     private  void initDBAccess(){
-        try {
-            dbHelper = OpenHelperManager.getHelper(MyApplication.getCrntActivityContext(), DatabaseHelper.class);
-            chapterDao=dbHelper.getChapterDao();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+      dbHelper = OpenHelperManager.getHelper(MyApplication.getAppContext(), OrmLiteDatabaseHelper.class);
+      chapterDao=dbHelper.getChapterDao();
     }
 
     @Subscribe
@@ -98,7 +102,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.chapterId;
         selectedHolder=event.holder;
         if(!event.isLong) {
-            IntentHelper.getInstance().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
+            ActivityStarterHelper.getInstance().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
         }
     }
 
@@ -111,18 +115,15 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         }*/
         try {
             chapterDao=dbHelper.getChapterDao();
-            result=chapterDao.queryForEq("diagram_id",diagramId);
+            result=chapterDao.queryForEq("diagram_id",3);
 //                result=chapterDao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         //sorting by position
-        Comparator<Chapter> comparator = new Comparator<Chapter>() {
-            @Override
-            public int compare(Chapter chapter, Chapter t1) {
-                return chapter.position-t1.position;
-            }
-        };
+
+
+        Collections.sort(result);
         return result;
     }
 
@@ -149,14 +150,27 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void downUpClicked(boolean toDown, int chapterId ){
 
-        try{
-            int positions[]= chapterAdapter.moveChapter(toDown,chapterId);
-            //position[0]=old pos of Chap Moved  1=old pos of Chap Replaced
-            int diagramId=updatePositionChapterMoved(chapterId,positions[1]);
-            updatePositionChapterReplaced(diagramId,positions[1],positions[0]);
+        try{ //in the next lines, we will want to move chapter from pos1, to pos2
+            int positions[]=chapterAdapter.getNewFuturePositions(toDown,chapterId);
 
-            chapterAdapter.notifyItemChanged(positions[1]);
-            chapterAdapter.notifyItemChanged(positions[0]);
+            //find in db the id and current position of both chapters
+            Chapter chapMoved = findChapterMoved(chapterId);
+            Chapter chapReplaced=findChapterReplaced(diagramId,positions[1]);
+
+            //update var chapters found with the new positions
+            chapMoved.position=positions[1];
+            chapReplaced.position=positions[0];
+
+            //update db chapters found with the new positions
+            updatePositionChapterMoved(chapterId,chapMoved.position);
+            updatePositionChapterReplaced(chapReplaced.id,chapReplaced.position);
+
+            //update the the ChapterHolders and List of RecyclerView
+            chapterAdapter.updateContent(chapMoved);
+            chapterAdapter.updateContent(chapReplaced);
+
+            //swap in the ui the chapters
+            chapterAdapter.swapChapter(positions[0],positions[1]);
 
         }catch(IndexOutOfBoundsException|SQLException|SchnException e){
             //IndexOutofBound is when downbtn is pressed for the last item
@@ -164,15 +178,12 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
             e.printStackTrace();
         }
     }
-    //the one that triggered the motion
-    private int updatePositionChapterMoved(int chapterId, int newPosition) throws SQLException{
-        Chapter chap1=chapterDao.queryForId(chapterId);
-        chap1.position=newPosition;
-        chapterDao.update(chap1);
-        return chap1.diagramId.id;
+
+    private Chapter findChapterMoved(int chapterId)throws SQLException{
+        return chapterDao.queryForId(chapterId);
     }
 
-    private void updatePositionChapterReplaced(int diagramId,int oldPosition, int newPosition)throws SQLException,SchnException{
+    private Chapter findChapterReplaced(int diagramId, int oldPosition) throws SQLException{
         Map<String, Object> chapterFields=new HashMap<>(2);
         chapterFields.put("diagram_id",diagramId);
         chapterFields.put("position",oldPosition);
@@ -180,9 +191,20 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         /*if(results.size()!=1){
             throw new SchnException("Have to be only one match with the query");
         }*/
-        Chapter chap2=results.get(0);
-        chap2.position=newPosition;
-        chapterDao.update(chap2);
+        return results.get(0);
+    }
+    //the one that triggered the motion
+    private void updatePositionChapterMoved(int chapterId, int newPosition) throws SQLException{
+        Chapter chap1=chapterDao.queryForId(chapterId);//TODO apparement l'exception n'a lieue que quand on bouge le chapitre, va a l'intérieur, retourne en arriere et essaye à nouveau de le bouger de place
+        chap1.position=newPosition;
+        chapterDao.update(chap1);
+    }
+
+    private void updatePositionChapterReplaced(int chapterId, int newPosition)throws SQLException,SchnException{
+
+        Chapter chap=chapterDao.queryForId(chapterId);
+        chap.position=newPosition;
+        chapterDao.update(chap);
     }
 
     //-----------------END UPSIDE DOWN---------------
@@ -204,7 +226,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void contextMenuDelete()
     {
-        DialogHelper.showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
     }
 
     @Override
@@ -221,7 +243,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void addChapter()
     {
-        DialogHelper.showConfirmEditText("New Chapter", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText("New Chapter", "Title",false, this);
     }
 
     @Override
