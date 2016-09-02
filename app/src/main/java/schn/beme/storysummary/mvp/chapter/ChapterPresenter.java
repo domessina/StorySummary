@@ -47,7 +47,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         super(view);
         this.diagramId=diagramId;
         initDBAccess();
-        chapterAdapter=new ChapterAdapter(createList(21));
+        chapterAdapter=new ChapterAdapter(createList());
 
     }
 
@@ -106,7 +106,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         }
     }
 
-    public List<Chapter> createList(int size) {
+    public List<Chapter> createList() {
 
         List<Chapter> result=null; /*= new ArrayList<>();
         for (int i=1; i <= size; i++) {
@@ -115,7 +115,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         }*/
         try {
             chapterDao=dbHelper.getChapterDao();
-            result=chapterDao.queryForEq("diagram_id",3);
+            result=chapterDao.queryForEq("diagram_id",diagramId);
 //                result=chapterDao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();

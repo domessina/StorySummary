@@ -3,20 +3,23 @@ package schn.beme.storysummary.narrativecomponent;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
-import lombok.AllArgsConstructor;
-
 /**
  * Created by Dorito on 25-07-16.
  */
-@AllArgsConstructor(suppressConstructorProperties = true)
 public class Scene extends NarrativeComponent {
 
     @DatabaseField(generatedId = true, columnName = "id")
     public int id;
     @DatabaseField(columnName = "chapter_id",
             canBeNull = false,foreign = true,
-            foreignAutoRefresh = false)//see third note of foreignautorefresh doc maxForeignAutoRefreshLevel = 1
+            foreignAutoRefresh = false,
+            columnDefinition = "integer references chapter(id) on delete cascade")//see third note of foreignautorefresh doc maxForeignAutoRefreshLevel = 1
     public Chapter chapterId;
+    @DatabaseField(columnName = "diagram_id",
+            canBeNull = false, foreign = true,
+            foreignAutoRefresh = false,
+            columnDefinition = "integer references diagram(id) on delete cascade")
+    public Diagram diagramId;
     @DatabaseField(columnName = "position") //TODO rajouter canbeNull=false
     public int position;
     @DatabaseField(columnName = "title")
@@ -28,14 +31,15 @@ public class Scene extends NarrativeComponent {
 
     public Scene(int id){this.id=id;}
 
-   /* public Scene(int id, Chapter chapterId, int position, String title, String note, String picture){
+    public Scene(int id, Chapter chapterId, Diagram diagramId, int position, String title, String note, String picture){
         this.id=id;
         this.chapterId=chapterId;
+        this.diagramId=diagramId;
         this.position=position;
         this.title=title;
         this.note=note;
         this.picture=picture;
-    }*/
+    }
 
     public Scene(){}
 

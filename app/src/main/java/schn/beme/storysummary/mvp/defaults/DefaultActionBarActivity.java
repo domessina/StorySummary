@@ -76,6 +76,7 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
             case R.id.action_synchronize:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
+                barPresenter.synchronize();
                 return true;
 
             case R.id.action_debug_reg:

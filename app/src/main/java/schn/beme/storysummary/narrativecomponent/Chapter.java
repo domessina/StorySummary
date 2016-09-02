@@ -3,13 +3,11 @@ package schn.beme.storysummary.narrativecomponent;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
-import lombok.AllArgsConstructor;
-
 /**
  * Created by Dorito on 20-07-16.
  */
-//supress parce que cette fonctionnalité n'est pas présente dans le java  android
-@AllArgsConstructor(suppressConstructorProperties = true)
+//supress parce que cette fonctionnalité lombock n'est pas présente dans le java  android
+//@AllArgsConstructor(suppressConstructorProperties = true)
 public class Chapter extends NarrativeComponent implements Comparable<Chapter> {
 
     @DatabaseField(generatedId = true, columnName = "id")

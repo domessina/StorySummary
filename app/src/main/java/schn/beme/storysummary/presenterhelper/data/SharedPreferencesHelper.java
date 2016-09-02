@@ -39,10 +39,11 @@ public class SharedPreferencesHelper {
 
     //----------------WORKING METHODS---------------
 
-    public  void setUserRegistered(boolean registered)
+    public  void setUserRegistered(boolean registered,int userId)
     {
         editor= sharedPref.edit();//vaut mieux le faire dans la meme méthode que le commi tou apply
         editor.putBoolean("registered",registered);
+        editor.putInt("userId",userId);
         editor.apply();  //faster than commit , because does not return boolean and is asynchronous(<>synchronized)
     }
 
@@ -51,5 +52,5 @@ public class SharedPreferencesHelper {
        return sharedPref.getBoolean("registered",false);
     }
 
-
+    public int getUserId(){return sharedPref.getInt("userId",-2);}
 }

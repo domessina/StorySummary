@@ -27,6 +27,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
+    //OkHttp to contact web services
+    compile 'com.squareup.okhttp3:okhttp:3.4.0'
+
+    //Json/Java converter
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.8.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.1'
+
+    //support UI for old android version
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
 
@@ -36,9 +45,9 @@ dependencies {
 
     //lombock provided= not included in apk only used during compilation
     //android-apt gradle plugin assists in working with annotation processors
-    provided "org.projectlombok:lombok:1.16.10"
-    apt "org.projectlombok:lombok:1.16.10"
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+        //provided "org.projectlombok:lombok:1.16.10"
+        //apt "org.projectlombok:lombok:1.16.10"
+        //provided 'org.glassfish:javax.annotation:10.0-b28'
 
     //GreenDao:EventBus
     compile 'org.greenrobot:eventbus:3.0.0'

@@ -18,6 +18,7 @@ import schn.beme.storysummary.StartStopAware;
 import schn.beme.storysummary.eventbusmsg.ClickSceneCardEvent;
 import schn.beme.storysummary.narrativecomponent.Chapter;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
+import schn.beme.storysummary.narrativecomponent.Diagram;
 import schn.beme.storysummary.narrativecomponent.Scene;
 import schn.beme.storysummary.presenterhelper.data.OrmLiteDatabaseHelper;
 import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
@@ -120,7 +121,7 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
     @Override
     public void accepted(String input) {
 
-        Scene s=new Scene(-1,new Chapter(chapterId), sceneAdapter.getItemCount()
+        Scene s=new Scene(-1,new Chapter(chapterId),new Diagram(MyApplication.workingDiagramId), sceneAdapter.getItemCount()
                 , input, "Write your notes","");
         sceneAdapter.addSceneCard(s);
         try {

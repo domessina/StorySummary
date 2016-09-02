@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 
 import com.j256.ormlite.dao.Dao;
 
+import schn.beme.storysummary.mvp.defaults.ActionDoneResponse;
 import schn.beme.storysummary.narrativecomponent.Chapter;
 import schn.beme.storysummary.narrativecomponent.Diagram;
 import schn.beme.storysummary.narrativecomponent.E_NarrativeComponent;
@@ -38,6 +39,10 @@ public interface Helper {
     }
 
     interface WebService{
+
+        ActionDoneResponse pushDiagram(Diagram d, String action);
+        void pushUserChoice(Diagram d, String action);
+
         NarrativeComponent getNComponent(int id, E_NarrativeComponent type);
         boolean postNComponent(NarrativeComponent nc, E_NarrativeComponent type);
         boolean putNComponent(NarrativeComponent nc,E_NarrativeComponent type);

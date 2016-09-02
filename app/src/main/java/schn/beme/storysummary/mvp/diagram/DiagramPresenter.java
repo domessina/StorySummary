@@ -23,6 +23,7 @@ import schn.beme.storysummary.eventbusmsg.ClickDiagramCardEvent;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarPresenter;
 import schn.beme.storysummary.StartStopAware;
 import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
+import schn.beme.storysummary.presenterhelper.data.SharedPreferencesHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.DialogWindowHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
@@ -42,6 +43,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
         super(view);
         initDBAccess();
+        MyApplication.userId= SharedPreferencesHelper.getInstance().getUserId();
         diagramAdapter=new DiagramAdapter(createList());
     }
 
@@ -101,6 +103,16 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.diagramId;
         selectedHolder=event.holder;
         if(!event.isLong){
+
+            MyApplication.workingDiagramId=lastDiagramIdTouched;
+            try {
+                Diagram d=diagramDao.queryForId(event.diagramId);
+                d.action="UPDATE";
+                d.needSynch=true;
+                diagramDao.update(d);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             ActivityStarterHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
         }
     }
@@ -117,7 +129,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
         try {
             diagramDao=dbHelper.getDiagramDao();
-            result =diagramDao.queryForAll();
+            result=diagramDao.queryForEq("enabled",true);
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>(0);
@@ -146,7 +158,11 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
     public void accepted() {
         Integer inte=(Integer)selectedHolder.removeCard();
         try {
-            diagramDao.deleteById(inte);
+            Diagram d=diagramDao.queryForId(inte);
+            d.enabled=false;
+            d.needSynch=true;
+            d.action="DELETE";
+            diagramDao.update(d);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -163,8 +179,11 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
     @Override
     public void accepted(String input) {
 
-        Diagram d=new Diagram(-1,input,0);//even if i set 9000 ormlite changes the id during create()
+        Diagram d=new Diagram(-1,input,MyApplication.userId);//even if i set 9000 ormlite changes the id during create()
         try {
+            d.action="CREATE";
+            d.needSynch=true;
+            d.enabled=true;
             diagramDao.create(d);
         } catch (SQLException e) {
             e.printStackTrace();
