@@ -1,6 +1,5 @@
-package schn.beme.storysummary.mvp.defaults;
+package schn.beme.storysummary.synchronization;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

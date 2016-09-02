@@ -1,19 +1,11 @@
-package schn.beme.storysummary.mvp.defaults;
-
-import android.os.AsyncTask;
-
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
+package schn.beme.storysummary.synchronization;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.narrativecomponent.Diagram;
-import schn.beme.storysummary.presenterhelper.data.OrmLiteDatabaseHelper;
 import schn.beme.storysummary.presenterhelper.dialog.ConfirmDialogListener;
-import schn.beme.storysummary.presenterhelper.dialog.ConfirmEditDialogListener;
 import schn.beme.storysummary.presenterhelper.dialog.DialogWindowHelper;
 
 /**

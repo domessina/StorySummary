@@ -1,11 +1,9 @@
 package schn.beme.storysummary.mvp.defaults;
 
-import schn.beme.storysummary.MyApplication;
+import schn.beme.storysummary.synchronization.SynchManager;
 import schn.beme.storysummary.mvp.settings.SettingsActivity;
-import schn.beme.storysummary.presenterhelper.Helper;
 import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
 import schn.beme.storysummary.presenterhelper.data.SharedPreferencesHelper;
-import schn.beme.storysummary.presenterhelper.network.OkHttpWebServiceHelper;
 
 /**
  * Created by Dorito on 11-07-16.

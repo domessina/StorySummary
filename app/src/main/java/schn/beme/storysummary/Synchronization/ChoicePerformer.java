@@ -1,8 +1,7 @@
-package schn.beme.storysummary.mvp.defaults;
+package schn.beme.storysummary.synchronization;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.query.In;
 
 import java.sql.SQLException;
 import java.util.HashMap;
