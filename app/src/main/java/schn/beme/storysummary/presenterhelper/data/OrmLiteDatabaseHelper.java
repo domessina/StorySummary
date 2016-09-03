@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import schn.beme.storysummary.narrativecomponent.Chapter;
 import schn.beme.storysummary.narrativecomponent.Diagram;
 import schn.beme.storysummary.narrativecomponent.Scene;
+import schn.beme.storysummary.narrativecomponent.Trait;
+import schn.beme.storysummary.narrativecomponent.Character;
 import schn.beme.storysummary.presenterhelper.Helper;
 
 /**
@@ -26,6 +28,8 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
     private Dao<Diagram, Integer> diagramDao;
     private Dao<Chapter, Integer> chapterDao;
     private Dao<Scene, Integer> sceneDao;
+    private Dao<Character, Integer> characterDao;
+    private Dao<Trait, Integer> traitDao;
 
 
 
@@ -44,6 +48,8 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
             TableUtils.createTable(connectionSource, Diagram.class);
             TableUtils.createTable(connectionSource, Chapter.class);
             TableUtils.createTable(connectionSource, Scene.class);
+            TableUtils.createTable(connectionSource, Character.class);
+            TableUtils.createTable(connectionSource, Trait.class);
 
         }
         catch (SQLException e) {
@@ -99,5 +105,26 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
             catch (SQLException e){e.printStackTrace();}
         }
         return sceneDao ;
+    }
+
+    @Override
+    public Dao<Character,Integer> getCharacterDao(){
+        if(characterDao == null){
+            try {
+                characterDao=getDao(Character.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return characterDao;
+    }
+    @Override
+    public Dao<Trait, Integer> getTraitDao()  {
+        if (traitDao == null) {
+
+            try{ traitDao = getDao(Trait.class);}
+            catch (SQLException e){e.printStackTrace();}
+        }
+        return traitDao;
     }
 }

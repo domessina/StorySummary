@@ -4,8 +4,12 @@ import android.graphics.drawable.Drawable;
 
 import com.j256.ormlite.dao.Dao;
 
+import java.util.List;
+
+import schn.beme.storysummary.narrativecomponent.Trait;
 import schn.beme.storysummary.synchronization.ActionDoneResponse;
 import schn.beme.storysummary.narrativecomponent.Chapter;
+import schn.beme.storysummary.narrativecomponent.Character;
 import schn.beme.storysummary.narrativecomponent.Diagram;
 import schn.beme.storysummary.narrativecomponent.E_NarrativeComponent;
 import schn.beme.storysummary.narrativecomponent.NarrativeComponent;
@@ -36,6 +40,8 @@ public interface Helper {
         Dao<Diagram, Integer> getDiagramDao() ;
         Dao<Chapter, Integer> getChapterDao()  ;
         Dao<Scene, Integer> getSceneDao()  ;
+        Dao<Character, Integer> getCharacterDao()  ;
+        Dao<Trait, Integer> getTraitDao()  ;
     }
 
     interface WebService{
@@ -43,10 +49,11 @@ public interface Helper {
         ActionDoneResponse pushDiagram(Diagram d, String action);
         void pushUserChoice(Diagram d, String action);
 
-        NarrativeComponent getNComponent(int id, E_NarrativeComponent type);
-        boolean postNComponent(NarrativeComponent nc, E_NarrativeComponent type);
-        boolean putNComponent(NarrativeComponent nc,E_NarrativeComponent type);
-        boolean deleteNComponent(NarrativeComponent nc, E_NarrativeComponent type);
-        Drawable getPicture(int sceneId);
+        <T> List<T> getAllTByDiagram(int diagramId, E_NarrativeComponent type, Class<T> clazz);
+
+        <T extends NarrativeComponent> boolean postOrPutT(T component, E_NarrativeComponent type,boolean isPost );
+
+
+            Drawable getPicture(int sceneId);
     }
 }

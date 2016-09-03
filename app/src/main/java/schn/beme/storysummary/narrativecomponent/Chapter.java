@@ -1,5 +1,7 @@
 package schn.beme.storysummary.narrativecomponent;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -8,22 +10,34 @@ import com.j256.ormlite.field.DatabaseField;
  */
 //supress parce que cette fonctionnalité lombock n'est pas présente dans le java  android
 //@AllArgsConstructor(suppressConstructorProperties = true)
+@JsonIgnoreProperties(value ={"id"}, ignoreUnknown = true)
 public class Chapter extends NarrativeComponent implements Comparable<Chapter> {
 
+    @JsonProperty("id")
     @DatabaseField(generatedId = true, columnName = "id")
     public int id;
+
     @DatabaseField(columnName = "server_id",defaultValue = "-1")
     public int serverId;
+
+    @JsonProperty("phase")
     @DatabaseField(columnName = "phase")
     public short phase;     //TODO field private avec oremlite ça irait?
+
+    @JsonProperty("title")
     @DatabaseField(columnName = "title")
     public String title;
+
+    @JsonProperty("position")
     @DatabaseField(columnName = "position",canBeNull = false)
     public int position;
+
+    @JsonProperty("note")
     @DatabaseField(columnName = "note", dataType = DataType.LONG_STRING)
     public String note;
 
     //ORMLite only holds id field of diagram, so diagramId will have almost the size of an int
+    @JsonProperty("diagramId")
     @DatabaseField(columnName = "diagram_id",
             canBeNull = false, foreign = true,
             foreignAutoRefresh = false,

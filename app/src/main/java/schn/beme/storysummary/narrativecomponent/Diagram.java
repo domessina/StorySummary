@@ -14,7 +14,7 @@ public class Diagram extends NarrativeComponent{
     public int id;
 
     @JsonProperty("id")
-    @DatabaseField(columnName = "server_id")
+    @DatabaseField(columnName = "server_id", defaultValue = "-1")
     public int serverId;
 
     @JsonProperty("title")
@@ -27,7 +27,7 @@ public class Diagram extends NarrativeComponent{
 
     @JsonProperty("pictureId")
     @DatabaseField(columnName = "picture_id")
-    public String picture_id;
+    public String pictureId;
 
     @DatabaseField(columnName = "need_synch")
     public boolean needSynch;
