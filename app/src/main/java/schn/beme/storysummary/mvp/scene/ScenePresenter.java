@@ -14,6 +14,7 @@ import java.util.List;
 
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.ResumePauseAware;
+import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.StartStopAware;
 import schn.beme.storysummary.eventbusmsg.ClickSceneCardEvent;
 import schn.beme.storysummary.narrativecomponent.Chapter;
@@ -58,6 +59,16 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
             e.printStackTrace();
             Log.e("Error","see EventBus stackTrace");
         }
+        if(MyApplication.sceneToRefreshId!=-1){
+            try {
+                initDBAccess();
+                sceneAdapter.updateContent(sceneDao.queryForId(MyApplication.sceneToRefreshId));
+            } catch (SQLException|SchnException e) {
+                e.printStackTrace();
+            }finally {
+                MyApplication.sceneToRefreshId=-1;
+            }
+        }
     }
 
 
@@ -95,7 +106,8 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
         selectedHolder=event.holder;
         if(!event.isLong) {
-            ActivityStarterHelper.getInstance().startSceneCharactersActivity(event.sceneId,event.holder.getSceneTitle(),event.holder.getSceneNote());
+//            ActivityStarterHelper.getInstance().startSceneCharactersActivity(event.sceneId,event.holder.getSceneTitle(),event.holder.getSceneNote());
+            getView().startSceneCharactersActivity(event.sceneId,event.holder.getSceneTitle(),event.holder.getSceneNote());
         }
     }
 
@@ -115,7 +127,7 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
     //----------ADDING SCENE-------
     public void addScene(){
-        DialogWindowHelper.getInstance().showConfirmEditText("New Scene", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText(getView().getContext(),"New Scene", "Title",false, this);
     }
 
     @Override
@@ -157,7 +169,7 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
     public void contextMenuDelete()
     {
-        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm(getView().getContext(),"Are you sure?",null,this);
     }
 
     @Override
@@ -189,7 +201,6 @@ public class ScenePresenter<V extends ScenePresenter.View> extends DefaultAction
 
 
     public interface View extends DefaultActionBarPresenter.View {
-        void showToast(String msg);
         String getChapterTitle();
         String getChapterNote();
         void scrollToEnd();

@@ -1,5 +1,6 @@
 package schn.beme.storysummary.presenterhelper.dialog;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.inputmethod.EditorInfo;
@@ -29,8 +30,9 @@ public final class DialogWindowHelper implements Helper.DialogWindow{
     //----------------WORKING METHODS---------------
 
     @Override
-    public void showConfirm(String title, String msg, final ConfirmDialogListener listener) {
-        new AlertDialog.Builder(MyApplication.getAppContext())
+    public void showConfirm(Context actContext, String title, String msg, final ConfirmDialogListener listener) {
+        //I don't know why but it does not work anymore with application context :(
+        new AlertDialog.Builder(actContext)
                 .setTitle(title)
                 .setMessage(msg)
                 .setPositiveButton("Yes",  new DialogInterface.OnClickListener() {
@@ -51,12 +53,12 @@ public final class DialogWindowHelper implements Helper.DialogWindow{
 
 
     @Override
-    public void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditDialogListener listener)
+    public void showConfirmEditText(Context actContext,String title, String msg,final boolean empty, final ConfirmEditDialogListener listener)
     {
         final EditText edit= new EditText(MyApplication.getAppContext());
         edit.setMaxLines(1);
         edit.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        new AlertDialog.Builder(MyApplication.getAppContext())
+        new AlertDialog.Builder(actContext)
                 .setTitle(title)
                 .setMessage(msg)
                 .setView(edit)

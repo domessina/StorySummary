@@ -25,7 +25,7 @@ import schn.beme.be.storysummary.BuildConfig;
 import schn.beme.be.storysummary.R;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 
-public class SceneCharactersActivity extends DefaultActionBarActivity {
+public class SceneCharactersActivity extends DefaultActionBarActivity implements SceneCharactersPresenter.View{
 
     public int sceneId=-1;
     public String sceneTitle;
@@ -43,9 +43,21 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
 
         super.onCreate(savedInstanceState);
         getIntentData();
-        presenter=new SceneCharactersPresenter(this);
+        presenter=new SceneCharactersPresenter<>(this,sceneId);
         initContent();
 
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        presenter.onResume();
     }
 
     private void getIntentData(){
@@ -65,7 +77,7 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
     }
 
     public void onClickSaveButton(View v){
-
+        presenter.saveBtnClicked();
     }
 
 
@@ -133,12 +145,26 @@ public class SceneCharactersActivity extends DefaultActionBarActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                img.setImageBitmap(mImageBitmap);
-//                Picasso.with(this).load .into(img);
+//                img.setImageBitmap(mImageBitmap);
+//                img.setImageURI(Uri.parse(new File(uri.getPath()).toString()));
+//                Picasso.with(this).load(uri).into(img);
 
             }
         }
     }
 
     //-----------END PICTURE IMPORTATION---------------
+
+
+    @Override
+    public String getSceneTitle() {
+
+        return ((TextView)findViewById(R.id.edit_scenec_title)).getText().toString();
+    }
+
+    @Override
+    public String getSceneNote() {
+
+        return ((TextView)findViewById(R.id.edit_scenec_note)).getText().toString();
+    }
 }

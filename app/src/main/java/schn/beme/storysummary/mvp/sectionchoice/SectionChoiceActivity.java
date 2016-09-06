@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.defaults.DefaultActivity;
+import schn.beme.storysummary.mvp.diagram.DiagramActivity;
+import schn.beme.storysummary.narrativecomponent.Diagram;
 
 public class SectionChoiceActivity extends DefaultActivity implements SectionChoicePresenter.View{
 
@@ -15,7 +18,7 @@ public class SectionChoiceActivity extends DefaultActivity implements SectionCho
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter=new SectionChoicePresenter();
+        presenter=new SectionChoicePresenter<SectionChoicePresenter.View>(this);
         setContentView(R.layout.activity_section_choice);
     }
 

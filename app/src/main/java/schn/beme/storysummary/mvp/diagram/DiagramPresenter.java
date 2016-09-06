@@ -43,7 +43,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
         super(view);
         initDBAccess();
-        MyApplication.userId= SharedPreferencesHelper.getInstance().getUserId();
+//        MyApplication.userId= SharedPreferencesHelper.getInstance().getUserId();
         diagramAdapter=new DiagramAdapter(createList());
     }
 
@@ -113,7 +113,8 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            ActivityStarterHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
+//            ActivityStarterHelper.getInstance().startChapterActivity(event.diagramId,event.diagramTitle);
+            getView().startChapterActivity(event.diagramId,event.diagramTitle);
         }
     }
 
@@ -130,6 +131,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
         try {
             diagramDao=dbHelper.getDiagramDao();
             result=diagramDao.queryForEq("enabled",true);
+            dbHelper.getReadableDatabase().setForeignKeyConstraintsEnabled(true);
         } catch (SQLException e) {
             e.printStackTrace();
             return new ArrayList<>(0);
@@ -151,7 +153,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
     public void contextMenuDelete()
     {
-        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm(getView().getContext(),"Are you sure?",null,this);
     }
 
     @Override
@@ -173,7 +175,7 @@ public class DiagramPresenter<V extends DiagramPresenter.View> extends DefaultAc
 
     public void addDiagram()
     {
-        DialogWindowHelper.getInstance().showConfirmEditText("New Diagram", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText(getView().getContext(),"New Diagram", "Title",false, this);
     }
 
     @Override

@@ -1,6 +1,10 @@
 package schn.beme.storysummary.mvp.defaults;
 
+import android.content.Context;
+
 import java.lang.ref.WeakReference;
+
+import schn.beme.storysummary.presenterhelper.Helper;
 
 /**
  * Created by Dorito on 11-07-16.
@@ -33,9 +37,9 @@ public class DefaultPresenter<V extends DefaultPresenter.View> {
             throw new NullPointerException("View is unavailable");
     }
 
-    public interface View{
-
-
+    public interface View extends Helper.ActivityStarter {
+        Context getContext();
+        void showToast(String msg);
     }
 
   /*  private static boolean isXLargeTablet(Context context) {

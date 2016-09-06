@@ -16,7 +16,7 @@ public class Character extends NarrativeComponent {
 
     @JsonProperty("id")
     @DatabaseField(columnName = "server_id", defaultValue = "-1")
-    public int serverId;
+    public int serverId=-1;
     @DatabaseField(columnName = "scene_id",
             canBeNull = false,foreign = true,
             foreignAutoRefresh = false,

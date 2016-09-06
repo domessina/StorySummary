@@ -56,7 +56,12 @@ public class PushDiagramsAsynchTask extends AsyncTask<Integer, Integer, Boolean>
 
     @Override
     protected void onPostExecute(Boolean result){
-        manager.pushDiagramsExecuted();
+
+        try {
+            manager.pushDiagramsExecuted();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void pushDiagrams(){

@@ -19,7 +19,7 @@ public class RegistrationActivity extends DefaultActivity implements Registratio
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        presenter=new RegistrationPresenter();
+        presenter=new RegistrationPresenter<RegistrationPresenter.View>(this);
         setContentView(R.layout.activity_registration);
         initViews();
     }

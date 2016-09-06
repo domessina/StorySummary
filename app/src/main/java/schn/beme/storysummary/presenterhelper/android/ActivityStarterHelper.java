@@ -13,7 +13,7 @@ import schn.beme.storysummary.presenterhelper.Helper;
 /**
  * Created by Dorito on 10-07-16.
  */
-public class ActivityStarterHelper implements Helper.ActivityStarter {
+public class ActivityStarterHelper  {
 
     private final Intent intent=new Intent();
 
@@ -37,7 +37,7 @@ public class ActivityStarterHelper implements Helper.ActivityStarter {
 
     //----------------WORKING METHODS---------------
 
-    @Override
+  /*  @Override
     public void startRegistrationActivity(){
         intent.setClass(MyApplication.getAppContext(),RegistrationActivity.class);
                 //if activities can't be started any more, uncomment theses lines and remove the one above.
@@ -95,7 +95,7 @@ public class ActivityStarterHelper implements Helper.ActivityStarter {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         MyApplication.getAppContext().startActivity(intent);
-    }
+    }*/
 
     //---------------END WORKING METHODS----------------
 

@@ -16,7 +16,7 @@ public class Trait extends NarrativeComponent {
 
     @JsonProperty("id")
     @DatabaseField(columnName = "server_id",defaultValue = "-1")
-    public int serverId;
+    public int serverId=-1;
 
     @JsonProperty("characterId")
     @DatabaseField(columnName = "character_id",

@@ -18,7 +18,7 @@ public class Chapter extends NarrativeComponent implements Comparable<Chapter> {
     public int id;
 
     @DatabaseField(columnName = "server_id",defaultValue = "-1")
-    public int serverId;
+    public int serverId=-1;
 
     @JsonProperty("phase")
     @DatabaseField(columnName = "phase")

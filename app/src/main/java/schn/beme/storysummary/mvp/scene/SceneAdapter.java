@@ -1,5 +1,10 @@
 package schn.beme.storysummary.mvp.scene;
 
+import android.content.ContentResolver;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v7.widget.DrawableUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +14,13 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.List;
 
 import schn.beme.be.storysummary.R;
+import schn.beme.storysummary.SchnException;
 import schn.beme.storysummary.eventbusmsg.ClickSceneCardEvent;
+import schn.beme.storysummary.narrativecomponent.Chapter;
 import schn.beme.storysummary.narrativecomponent.Scene;
 
 /**
@@ -35,9 +43,22 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneVH>{
     @Override
     public void onBindViewHolder(SceneVH holder, int position) {
         Scene s=sceneList.get(position);
+        holder.sceneId=s.id;
         holder.titleTv.setText(s.title);
         holder.noteTv.setText(s.note);
         holder.imgV.setImageResource(R.drawable.salope);
+//        holder.imgV.setImageURI(Uri.parse(new File("/external/media/1366.jpg").toString()));
+
+    }
+
+    public void updateContent(Scene c) throws SchnException {
+        int pos=sceneList.indexOf(new Scene(c.id));
+        if(pos==-1)
+            throw new SchnException("scene to refresh not found");
+        else{
+            sceneList.set(pos,c);
+            notifyItemChanged(pos);
+        }
     }
 
     @Override
@@ -73,6 +94,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneVH>{
             titleTv=(TextView)v.findViewById(R.id.card_scene_title);
             noteTv=(TextView)v.findViewById(R.id.card_scene_note);
             imgV=(ImageView)v.findViewById(R.id.card_scene_picture);
+
 //            Picasso.with(imgV.getContext()).load()
         }
 

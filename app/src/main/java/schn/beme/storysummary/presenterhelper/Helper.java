@@ -1,5 +1,6 @@
 package schn.beme.storysummary.presenterhelper;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.j256.ormlite.dao.Dao;
@@ -32,8 +33,8 @@ public interface Helper {
     }
 
     interface DialogWindow{
-        void showConfirm(String title, String msg, final ConfirmDialogListener listener);
-        void showConfirmEditText(String title, String msg,final boolean empty, final ConfirmEditDialogListener listener);
+        void showConfirm(Context actContext, String title, String msg, final ConfirmDialogListener listener);
+        void showConfirmEditText(Context actContext,String title, String msg,final boolean empty, final ConfirmEditDialogListener listener);
     }
 
     interface Database{

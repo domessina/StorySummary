@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 /**
  * Created by Dorito on 18-07-16.
  */
-@JsonIgnoreProperties(value ={"id","needSynch","action","enabled"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value ={"needSynch","action","enabled"}, ignoreUnknown = true)
 public class Diagram extends NarrativeComponent{
 
     @DatabaseField(generatedId = true, columnName = "id") //TODO indexer seulement les id des scènes car ce ser ala colonne la plus utilisée ET plus pleine?
@@ -15,7 +15,7 @@ public class Diagram extends NarrativeComponent{
 
     @JsonProperty("id")
     @DatabaseField(columnName = "server_id", defaultValue = "-1")
-    public int serverId;
+    public Integer serverId;
 
     @JsonProperty("title")
     @DatabaseField(columnName = "title")

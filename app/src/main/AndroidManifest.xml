@@ -33,7 +33,7 @@
         <activity
             android:name="schn.beme.storysummary.mvp.diagram.DiagramActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name="schn.beme.storysummary.mvp.settings.SettingsActivity"

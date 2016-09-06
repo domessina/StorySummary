@@ -62,7 +62,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
         }
 
         //prepare request
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://localhost/v1/api/sync/"+USER_ID+lastPathSection).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.0.2:8080/v1/api/sync"+lastPathSection).newBuilder();
         urlBuilder.addQueryParameter("action", action);
         String url = urlBuilder.build().toString();
 
@@ -79,7 +79,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
             //post request
             response = client.newCall(request).execute();
             responseBody=response.body().string();
-
+            int caca=response.code();
             //deserialization
             if(lastPathSection.equals("/pushDiagram")){
                 actionDone= mapper.readValue(responseBody,ActionDoneResponse.class);}
@@ -104,7 +104,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
         String body;
 
         //prepare request
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://localhost/v1/api/nc/"+type.toString()+"/list").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://1921.168.0.2:8080/v1/api/nc/"+type.toString()+"/list").newBuilder();
         urlBuilder.addQueryParameter("diagramId", String.valueOf(diagramId));
         String url = urlBuilder.build().toString();
 

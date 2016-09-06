@@ -29,12 +29,14 @@ public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View>
 
     public void actionSettings()
     {
-        ActivityStarterHelper.getInstance().startActivityNoFlags(SettingsActivity.class);
+//        ActivityStarterHelper.getInstance().startActivityNoFlags(SettingsActivity.class);
+            getView().startActivityNoFlags(SettingsActivity.class);
     }
 
     public void synchronize(){
 
-        new SynchManager().synchronise();
+        new SynchManager().synchronise(getView().getContext());
+//        new TestService().test();
     }
 
     public interface View extends DefaultPresenter.View

@@ -43,7 +43,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
         try {
 
             //for ON DELETE CASCADE before creating tables
-            database.setForeignKeyConstraintsEnabled(true);
+//            database.setForeignKeyConstraintsEnabled(true);
 
             TableUtils.createTable(connectionSource, Diagram.class);
             TableUtils.createTable(connectionSource, Chapter.class);

@@ -102,7 +102,8 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
         lastDiagramIdTouched=event.chapterId;
         selectedHolder=event.holder;
         if(!event.isLong) {
-            ActivityStarterHelper.getInstance().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
+//            ActivityStarterHelper.getInstance().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
+        getView().startSceneActivity(selectedHolder.chapterId,selectedHolder.getChapterTitle(),selectedHolder.getChapterNote());
         }
     }
 
@@ -226,7 +227,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void contextMenuDelete()
     {
-        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
+//        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
     }
 
     @Override
@@ -243,7 +244,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void addChapter()
     {
-        DialogWindowHelper.getInstance().showConfirmEditText("New Chapter", "Title",false, this);
+        DialogWindowHelper.getInstance().showConfirmEditText(getView().getContext(),"New Chapter", "Title",false, this);
     }
 
     @Override
@@ -265,7 +266,6 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
     {
         void scrollToEnd();
         String getDiagramTitle();
-        void showToast(String text);
     }
 }
 

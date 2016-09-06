@@ -12,8 +12,9 @@ public class MyApplication extends Application {
     private static Context context;
     public static int diagramToRefreshId=-1;
     public static int chapterToRefreshId=-1;
+    public static int sceneToRefreshId=-1;
     public static int workingDiagramId;
-    public static int userId=-1;
+    public static int userId=1;
 
     @Override
     public void onCreate() {
