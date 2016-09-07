@@ -40,15 +40,15 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
 
     @Override
     public ActionDoneResponse pushDiagram(Diagram d, String action) {
-        return pushDiagramAndAction(d, action, "/pushDiagram");
+        return (ActionDoneResponse)pushDiagramAndAction(d, action, "/pushDiagram");
     }
 
     @Override
-    public void pushUserChoice(Diagram d, String action) {
-        pushDiagramAndAction(d,action, "/pushUserChoice");
+    public Diagram pushUserChoice(Diagram d, String action) {
+        return (Diagram)pushDiagramAndAction(d,action, "/pushUserChoice");
     }
 
-    private ActionDoneResponse pushDiagramAndAction(Diagram d, String action, String lastPathSection){
+    private Object pushDiagramAndAction(Diagram d, String action, String lastPathSection){
         ObjectMapper mapper;
         String body;
 
@@ -75,6 +75,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
         Response response;
         String responseBody;
         ActionDoneResponse actionDone=null;
+        Diagram diagram=null;
         try {
             //post request
             response = client.newCall(request).execute();
@@ -82,12 +83,15 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
             int caca=response.code();
             //deserialization
             if(lastPathSection.equals("/pushDiagram")){
-                actionDone= mapper.readValue(responseBody,ActionDoneResponse.class);}
+                return mapper.readValue(responseBody,ActionDoneResponse.class);            }
+            else{
+                return mapper.readValue(responseBody,Diagram.class);}
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-        return actionDone;
+
     }
 
     //----------------END PUSHES------------------

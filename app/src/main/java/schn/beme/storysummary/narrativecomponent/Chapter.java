@@ -10,15 +10,16 @@ import com.j256.ormlite.field.DatabaseField;
  */
 //supress parce que cette fonctionnalité lombock n'est pas présente dans le java  android
 //@AllArgsConstructor(suppressConstructorProperties = true)
-@JsonIgnoreProperties(value ={"id"}, ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Chapter extends NarrativeComponent implements Comparable<Chapter> {
 
-    @JsonProperty("id")
+
     @DatabaseField(generatedId = true, columnName = "id")
     public int id;
 
+    @JsonProperty("id")
     @DatabaseField(columnName = "server_id",defaultValue = "-1")
-    public int serverId=-1;
+    public Integer serverId;
 
     @JsonProperty("phase")
     @DatabaseField(columnName = "phase")

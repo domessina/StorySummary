@@ -2,11 +2,13 @@ package schn.beme.storysummary.synchronization;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import schn.beme.storysummary.MyApplication;
@@ -54,30 +56,36 @@ public class ChoicePerformer {
         for(Map.Entry<Integer,String> entry:userChoices.entrySet()){
             Diagram d=diagramDao.queryForId(entry.getKey());
             switch (entry.getValue()){
-                case "S-DELETE":  sDelete(d.id);     break;
-                case "C-DELETE":  cDelete(d.id);      break;
+                case "S-DELETE":  sDelete(d);     break;
+                case "C-DELETE":  cDelete(d);      break;
                 case "C-UPDATE":  cUpdate(d) ;     break;
                 case "S-UPDATE":  sUpdate(d);    break;
             }
-            d.needSynch=false;
-            diagramDao.update(d);
         }
     }
 
-    private void sDelete(int diagramId) throws SQLException {
-        diagramDao.deleteById(diagramId);
+    private void sDelete(Diagram d) throws SQLException {
+        d.enabled=false;
+        diagramDao.update(d);
     }
 
 
-    private void cDelete(int diagramId) throws SQLException {
-        diagramDao.deleteById(diagramId);
+    private void cDelete(Diagram d) throws SQLException {
+//        diagramDao.deleteById(diagramId);
+        d.needSynch=false;
+        diagramDao.update(d);
     }
 
     private void cUpdate(Diagram d){
         cUpdateD.add(d);
     }
 
-    private void sUpdate(Diagram d){
+    private void sUpdate(Diagram d) throws SQLException {
+
+        UpdateBuilder<Diagram, Integer> updateBuilder = diagramDao.updateBuilder();
+        updateBuilder.where().eq("id", d.id);
+        updateBuilder.updateColumnValue("enabled",true);
+        updateBuilder.update();
         sUpdateD.add(d);
         try {
             List<Chapter> chapters=chapterDao.queryForEq("diagram_id",d.id);

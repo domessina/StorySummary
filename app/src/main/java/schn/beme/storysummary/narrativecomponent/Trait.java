@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 /**
  * Created by Dorito on 02-09-16.
  */
-@JsonIgnoreProperties(value ={"id"}, ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Trait extends NarrativeComponent {
 
 
@@ -16,7 +16,7 @@ public class Trait extends NarrativeComponent {
 
     @JsonProperty("id")
     @DatabaseField(columnName = "server_id",defaultValue = "-1")
-    public int serverId=-1;
+    public Integer serverId;
 
     @JsonProperty("characterId")
     @DatabaseField(columnName = "character_id",

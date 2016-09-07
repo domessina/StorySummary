@@ -78,7 +78,7 @@ public class SynchManager implements ConfirmDialogListener {
     @Override
     public void canceled() {
         String choice =actionsDone.get(indexList).choices;
-        choice=choice.split("|")[1];
+        choice=choice.split(":")[1];
         userChoices.put(diagrams.get(indexList).id,choice);
         try {
             if(indexList==(actionsDone.size()-1))
@@ -115,7 +115,6 @@ public class SynchManager implements ConfirmDialogListener {
                 d=null;
             }
             else if (actionResponse.action.equals("DELETE")){
-                diagrams.get(indexList).id=-1;
                 diagramDao.deleteById(diagrams.get(indexList).id);
             }
         }
@@ -156,22 +155,21 @@ public class SynchManager implements ConfirmDialogListener {
 
     public void cUpdateExecuted(){
         cUpDelToSrvAT=null;
-        /*
+        try {
+            List<Diagram> diagramsNoSync=diagramDao.queryForEq("enabled",true);
+            for(Diagram d: diagramsNoSync){
+                d.needSynch=false;
+                diagramDao.update(d);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+            /*
         - pictures with web service
         - need to pull all diagrams created updated or deleted from server who did not create conflict during pushDiagram
          */
 
-        for(Diagram d: diagrams){
-            d.needSynch=false;
-            //it means the Diagram does not exist in db anymore, see above
-            if(d.id==-1)
-                break;
-            try {
-                diagramDao.update(d);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private  void initDBAccess(){

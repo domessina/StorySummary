@@ -48,7 +48,7 @@ public interface Helper {
     interface WebService{
 
         ActionDoneResponse pushDiagram(Diagram d, String action);
-        void pushUserChoice(Diagram d, String action);
+        Diagram pushUserChoice(Diagram d, String action);
 
         <T> List<T> getAllTByDiagram(int diagramId, E_NarrativeComponent type, Class<T> clazz);
 

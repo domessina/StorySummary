@@ -54,6 +54,7 @@ public class SUpdateAsynchTask extends AsyncTask<Integer, Integer, Boolean> {
         List<Trait> traits=null;
 
         for(Diagram d:sUpdateD){
+
             chapters=webService.getAllTByDiagram(d.id, E_NarrativeComponent.NC_Chapter,Chapter.class);
             scenes=webService.getAllTByDiagram(d.id,E_NarrativeComponent.NC_Scene,Scene.class);
             characters=webService.getAllTByDiagram(d.id,E_NarrativeComponent.NC_Character,Character.class);
@@ -83,8 +84,9 @@ public class SUpdateAsynchTask extends AsyncTask<Integer, Integer, Boolean> {
             }
             //TODO si apres les tests il n'y a plus de probleme avec la obucle for au dessus, y mettre le contenu de la boucle ci dessous
             for(Diagram d:sUpdateD){
-                d.needSynch=false;
-                diagramDao.update(d);
+//                d.needSynch=false;
+                //it's done in pushUserChoiceAT
+//                diagramDao.update(d);
             }
         } catch (SQLException e) {
             e.printStackTrace();

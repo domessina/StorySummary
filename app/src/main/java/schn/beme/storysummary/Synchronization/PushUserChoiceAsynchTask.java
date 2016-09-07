@@ -43,7 +43,13 @@ public class PushUserChoiceAsynchTask extends AsyncTask<Integer, Integer, Boolea
         for(Map.Entry<Integer,String> entry:userChoices.entrySet()){
             try {
                 Diagram d=diagramDao.queryForId(entry.getKey());
-                webService.pushUserChoice(d,entry.getValue());
+                Diagram d2=webService.pushUserChoice(d,entry.getValue());
+                //json deserialization resolution of a minor logic problem in my code
+            if(d!=null&&d2!=null){
+                d.title=d2.title;
+                d.pictureId=d2.pictureId;
+                diagramDao.update(d);
+            }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
