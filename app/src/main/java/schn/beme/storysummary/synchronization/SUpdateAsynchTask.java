@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -53,35 +54,51 @@ public class SUpdateAsynchTask extends AsyncTask<Integer, Integer, Boolean> {
         List<Character> characters=null;
         List<Trait> traits=null;
 
+        try{
         for(Diagram d:sUpdateD){
 
-            chapters=webService.getAllTByDiagram(d.id, E_NarrativeComponent.NC_Chapter,Chapter.class);
-            scenes=webService.getAllTByDiagram(d.id,E_NarrativeComponent.NC_Scene,Scene.class);
-            characters=webService.getAllTByDiagram(d.id,E_NarrativeComponent.NC_Character,Character.class);
-            traits=webService.getAllTByDiagram(d.id,E_NarrativeComponent.NC_Trait,Trait.class);
-        }
-        try {
+            //it deletes chapters and scenes with cascade
+            DeleteBuilder<Chapter, Integer> deleteBuilder = chapterDao.deleteBuilder();
+            deleteBuilder.where().eq("diagram_id",d.id);
+            deleteBuilder.delete();
+            //it deletes characters and traits with cascade
+            DeleteBuilder<Character, Integer> deleteBuilder2 = characterDao.deleteBuilder();
+            deleteBuilder2.where().eq("diagram_id",d.id);
+            deleteBuilder2.delete();
+
+            chapters=webService.getAllTByDiagram(d.serverId, E_NarrativeComponent.NC_Chapter,Chapter.class);
+            scenes=webService.getAllTByDiagram(d.serverId,E_NarrativeComponent.NC_Scene,Scene.class);
+            characters=webService.getAllTByDiagram(d.serverId,E_NarrativeComponent.NC_Character,Character.class);
+            traits=webService.getAllTByDiagram(d.serverId,E_NarrativeComponent.NC_Trait,Trait.class);
+
             //if there is no chapters for the diagram on server side, the list would be null
             if(chapters!=null){
                 for(Chapter c:chapters){
+                    c.diagramId=new Diagram(d.id);
                     chapterDao.create(c);
                 }
             }
             if(scenes!=null){
                 for(Scene s:scenes){
+                    s.diagramId=new Diagram(d.id);
                     sceneDao.create(s);
                 }
             }
             if(characters!=null){
                 for(Character c:characters){
+                    c.diagramId=new Diagram(d.id);
                     characterDao.create(c);
                 }
             }
             if(traits!=null){
                 for(Trait t:traits){
+                    t.diagramId=new Diagram(d.id);
                     traitDao.create(t);
                 }
             }
+        }
+
+
             //TODO si apres les tests il n'y a plus de probleme avec la obucle for au dessus, y mettre le contenu de la boucle ci dessous
             for(Diagram d:sUpdateD){
 //                d.needSynch=false;

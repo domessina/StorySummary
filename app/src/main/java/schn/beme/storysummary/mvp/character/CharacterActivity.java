@@ -1,47 +1,42 @@
-package schn.beme.storysummary.mvp.chapter;
+package schn.beme.storysummary.mvp.character;
 
-import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Set;
-
-import schn.beme.be.storysummary.BuildConfig;
 import schn.beme.be.storysummary.R;
-import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.defaults.DefaultActionBarActivity;
 
-public class ChapterActivity extends DefaultActionBarActivity implements ChapterPresenter.View{
+/**
+ * Created by Dorito on 07-09-16.
+ */
+public class CharacterActivity  extends DefaultActionBarActivity implements CharacterPresenter.View{
 
-    public int diagramId=-1;
-    public String diagramTitle;
-    protected ChapterPresenter presenter;
+    protected CharacterPresenter presenter;
     private RecyclerView recyclerV;
+
 
     @Override
     protected int getLayoutId() {
 
-        return R.layout.activity_chapter;
+        return R.layout.activity_character;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        getIntentData();
-        presenter=new ChapterPresenter<ChapterPresenter.View>(this,diagramId);
-
-       initContent();
-        setTitle(R.string.title_activity_chapter);
+        presenter=new CharacterPresenter<CharacterPresenter.View>(this);
+        initContent();
+        setTitle(R.string.title_activity_character);
     }
 
     @Override
@@ -49,7 +44,6 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         super.onStart();
         presenter.onStart();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -59,7 +53,7 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onStart();
+        presenter.onResume();
 
     }
 
@@ -70,27 +64,17 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
     }
 
     private void initContent() {
-        EditText diagramTitleEdit = (EditText) findViewById(R.id.edit_diagram_title);
-        diagramTitleEdit.setText(diagramTitle, TextView.BufferType.EDITABLE);
         initRecyclerView();
         initFAB();
     }
 
-    private void getIntentData()
-    {
-        diagramId = getIntent().getIntExtra("diagramId",-1);
-        diagramTitle = getIntent().getStringExtra("diagramTitle");
-        if(BuildConfig.DEBUG&&!(diagramId>-1))
-            throw new AssertionError("diagramId have to be >-1");
-    }
-
     private void initRecyclerView(){
-        recyclerV = (RecyclerView) findViewById(R.id.recycler_chapter);
+        recyclerV = (RecyclerView) findViewById(R.id.recycler_character);
         recyclerV.setHasFixedSize(true);
         LinearLayoutManager lLManager = new LinearLayoutManager(this);
         lLManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerV.setLayoutManager(lLManager);
-        recyclerV.setAdapter(presenter.getChapterAdapter());
+        recyclerV.setAdapter(presenter.getCharacterAdapter());
         registerForContextMenu(recyclerV);
 
     }
@@ -102,23 +86,11 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
             @Override
             public void onClick(View view) {
 
-                presenter.addChapter();
+                presenter.addCharacter();
             }
         });
     }
 
-    public void onClickSaveBtn(View v){
-        presenter.saveBtnClicked();
-    }
-
-    public void onClickUpDownBtn(View v){
-
-        boolean isDownBtn=(v.getId()==R.id.card_chapter_down);
-        presenter.downUpClicked(isDownBtn,(Integer)v.getTag());
-
-    }
-
-    //----------------MENUS-------------------
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
@@ -142,16 +114,10 @@ public class ChapterActivity extends DefaultActionBarActivity implements Chapter
         }
     }
 
-    //-------END MENU-----------
     @Override
     public void scrollToEnd() {
 
         recyclerV.scrollToPosition(presenter.getLastPositionTotal());
-    }
-
-    @Override
-    public String getDiagramTitle(){
-        return ((TextView)findViewById(R.id.edit_diagram_title)).getText().toString();
     }
 
 

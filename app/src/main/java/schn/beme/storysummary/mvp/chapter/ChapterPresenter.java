@@ -227,7 +227,7 @@ public class ChapterPresenter<V extends ChapterPresenter.View> extends DefaultAc
 
     public void contextMenuDelete()
     {
-//        DialogWindowHelper.getInstance().showConfirm("Are you sure?",null,this);
+        DialogWindowHelper.getInstance().showConfirm(getView().getContext(),"Are you sure?",null,this);
     }
 
     @Override

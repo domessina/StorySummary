@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/llayout_char_traits"
+
+    tools:context="schn.beme.storysummary.mvp.scenecharacters.SceneCharactersActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_char_trait"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="parallax"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name:"/>
+                    <EditText
+                        android:id="@+id/edit_char_trait_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="textCapWords"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Type:"/>
+                    <EditText
+                        android:id="@+id/edit_char_trait_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="textCapWords"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notes:"/>
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorBackgroundText"
+                        android:layout_marginRight="3dp"
+                        android:layout_marginLeft="3dp"
+                        >
+                        <EditText
+                            android:id="@+id/edit_char_trait_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:lines="7"
+                            android:gravity="top"
+                            android:background="@android:color/transparent"
+                            />
+                    </ScrollView>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        style="@style/AppTheme.Button"
+                        android:layout_gravity="center_horizontal"
+                        android:onClick="onClickSaveButton"/>
+                </LinearLayout>
+            <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_char_trait"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        />
+
+        <include layout="@layout/fab_add_scroll"
+                 app:layout_anchor="@id/recycler_char_trait"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>

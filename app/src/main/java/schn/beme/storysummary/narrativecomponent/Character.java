@@ -1,5 +1,6 @@
 package schn.beme.storysummary.narrativecomponent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
@@ -23,12 +24,15 @@ public class Character extends NarrativeComponent {
             columnDefinition = "integer references scene(id) on delete cascade")
     public Scene sceneId;
 
-    @JsonProperty("diagramId")
+    @JsonIgnore
     @DatabaseField(columnName = "diagram_id",
             canBeNull = false, foreign = true,
             foreignAutoRefresh = false,
             columnDefinition = "integer references diagram(id) on delete cascade")
     public Diagram diagramId;
+
+    @JsonProperty("diagramId")
+    public int diagramIdForSync;
 
     @JsonProperty("name")
     @DatabaseField(columnName = "name")
@@ -47,4 +51,10 @@ public class Character extends NarrativeComponent {
     public String picture;
 
     public Character(){}
+
+    public Character(int id){
+        this.id=id;
+    }
+
+
 }

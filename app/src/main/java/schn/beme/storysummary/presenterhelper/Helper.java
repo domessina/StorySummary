@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 
 import java.util.List;
 
+import schn.beme.storysummary.narrativecomponent.CharacterScene;
 import schn.beme.storysummary.narrativecomponent.Trait;
 import schn.beme.storysummary.synchronization.ActionDoneResponse;
 import schn.beme.storysummary.narrativecomponent.Chapter;
@@ -30,6 +31,7 @@ public interface Helper {
         void startChapterActivity(int diagramId, String diagramTitle);
         void startSceneActivity(int chapterId, String chapterTitle, String chapterNote);
         void startSceneCharactersActivity(int sceneId, String sceneTitle, String sceneNote);
+        void startCharacterTraitsActivity(int characterId);
     }
 
     interface DialogWindow{
@@ -43,18 +45,16 @@ public interface Helper {
         Dao<Scene, Integer> getSceneDao()  ;
         Dao<Character, Integer> getCharacterDao()  ;
         Dao<Trait, Integer> getTraitDao()  ;
+        Dao<CharacterScene, Void> getCharacterSceneDao()  ;
     }
 
     interface WebService{
-
         ActionDoneResponse pushDiagram(Diagram d, String action);
         Diagram pushUserChoice(Diagram d, String action);
 
         <T> List<T> getAllTByDiagram(int diagramId, E_NarrativeComponent type, Class<T> clazz);
+        <T extends NarrativeComponent> int postOrPutT(T component, E_NarrativeComponent type,boolean isPost );
 
-        <T extends NarrativeComponent> boolean postOrPutT(T component, E_NarrativeComponent type,boolean isPost );
-
-
-            Drawable getPicture(int sceneId);
+        Drawable getPicture(int sceneId);
     }
 }

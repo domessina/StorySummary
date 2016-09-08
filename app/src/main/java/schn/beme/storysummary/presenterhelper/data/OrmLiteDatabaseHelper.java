@@ -11,6 +11,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import schn.beme.storysummary.narrativecomponent.Chapter;
+import schn.beme.storysummary.narrativecomponent.CharacterScene;
 import schn.beme.storysummary.narrativecomponent.Diagram;
 import schn.beme.storysummary.narrativecomponent.Scene;
 import schn.beme.storysummary.narrativecomponent.Trait;
@@ -30,6 +31,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
     private Dao<Scene, Integer> sceneDao;
     private Dao<Character, Integer> characterDao;
     private Dao<Trait, Integer> traitDao;
+    private Dao<CharacterScene, Void> characterSceneDao;
 
 
 
@@ -50,7 +52,7 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
             TableUtils.createTable(connectionSource, Scene.class);
             TableUtils.createTable(connectionSource, Character.class);
             TableUtils.createTable(connectionSource, Trait.class);
-
+            TableUtils.createTable(connectionSource, CharacterScene.class);
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -126,5 +128,15 @@ public class OrmLiteDatabaseHelper extends OrmLiteSqliteOpenHelper implements He
             catch (SQLException e){e.printStackTrace();}
         }
         return traitDao;
+    }
+
+    @Override
+    public Dao<CharacterScene, Void> getCharacterSceneDao()  {
+        if (characterSceneDao == null) {
+
+            try{ characterSceneDao = getDao(CharacterScene.class);}
+            catch (SQLException e){e.printStackTrace();}
+        }
+        return characterSceneDao;
     }
 }

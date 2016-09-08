@@ -1,5 +1,6 @@
 package schn.beme.storysummary.mvp.defaults;
 
+import schn.beme.storysummary.mvp.character.CharacterActivity;
 import schn.beme.storysummary.synchronization.SynchManager;
 import schn.beme.storysummary.mvp.settings.SettingsActivity;
 import schn.beme.storysummary.presenterhelper.android.ActivityStarterHelper;
@@ -33,6 +34,10 @@ public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View>
             getView().startActivityNoFlags(SettingsActivity.class);
     }
 
+    public void charactersMenu(){
+        getView().startActivityNoFlags(CharacterActivity.class);
+    }
+
     public void synchronize(){
 
         new SynchManager().synchronise(getView().getContext());
@@ -41,6 +46,5 @@ public class DefaultActionBarPresenter<V extends DefaultActionBarPresenter.View>
 
     public interface View extends DefaultPresenter.View
     {
-
     }
 }

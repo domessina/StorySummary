@@ -6,6 +6,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import schn.beme.storysummary.MyApplication;
@@ -54,40 +55,61 @@ public class CUpdateAsynchTask extends AsyncTask<Integer, Integer, Boolean> {
         List<Scene> scenes=null;
         List<Character> characters=null;
         List<Trait> traits=null;
+        HashMap<Integer, Integer> chapLocalSrvId;
+        HashMap<Integer, Integer> charLocalSrvId;
 
+        try{
         for(Diagram d:toUpdate){
-            try {
-                chapters=chapterDao.queryForEq("diagram_id",d.id);
-                scenes=sceneDao.queryForEq("diagram_id",d.id);
-                characters=characterDao.queryForEq("diagram_id",d.id);
-                traits=traitDao.queryForEq("diagram_id",d.id);
-            } catch (SQLException e) {
-                e.printStackTrace(); return false;}
-        }
 
-        if(chapters!=null){
-            for(Chapter c: chapters){
-                webService.postOrPutT(c,E_NarrativeComponent.NC_Chapter,c.serverId==-1);
+            chapters=chapterDao.queryForEq("diagram_id",d.id);
+            scenes=sceneDao.queryForEq("diagram_id",d.id);
+            characters=characterDao.queryForEq("diagram_id",d.id);
+            traits=traitDao.queryForEq("diagram_id",d.id);
+
+            chapLocalSrvId=new HashMap<>(chapters.size());
+            charLocalSrvId=new HashMap<>(characters.size());
+
+            if(chapters!=null){
+                for(Chapter c: chapters){
+                    c.diagramIdForSync=d.serverId;
+                    c.serverId=webService.postOrPutT(c,E_NarrativeComponent.NC_Chapter,true);
+                    chapLocalSrvId.put(c.id,c.serverId);
+                    chapterDao.update(c);
+                }
+            }
+
+            if(scenes!=null){
+                for(Scene s:scenes) {
+                    s.diagramIdForSync=d.serverId;
+                    s.chapterIdForSync=chapLocalSrvId.get(s.chapterId.id);
+                    s.serverId=webService.postOrPutT(s, E_NarrativeComponent.NC_Scene, true);
+                    sceneDao.update(s);
+                }
+            }
+
+            if(characters!=null){
+                for(Character c:characters){
+                    c.diagramIdForSync=d.serverId;
+                    c.serverId=webService.postOrPutT(c,E_NarrativeComponent.NC_Character,true);
+                    charLocalSrvId.put(c.id,c.serverId);
+                    characterDao.update(c);
+                }
+            }
+
+            if(traits!=null){
+                for(Trait t:traits){
+                    t.diagramIdForSync=d.serverId;
+                    t.characterIdForSync=charLocalSrvId.get(t.characterId.id);
+                                                                        //t.serverId==-1
+                    t.serverId=webService.postOrPutT(t,E_NarrativeComponent.NC_Trait,true);
+                    traitDao.update(t);
+                }
             }
         }
 
-        if(scenes!=null){
-            for(Scene s:scenes) {
-                webService.postOrPutT(s, E_NarrativeComponent.NC_Scene, s.serverId == -1);
-            }
-        }
 
-        if(characters!=null){
-            for(Character c:characters){
-                webService.postOrPutT(c,E_NarrativeComponent.NC_Character,c.serverId==-1);
-            }
-        }
-
-        if(traits!=null){
-            for(Trait t:traits){
-                webService.postOrPutT(t,E_NarrativeComponent.NC_Trait,t.serverId==-1);
-            }
-        }
+        } catch (SQLException e) {
+            e.printStackTrace(); return false;}
         return true;
     }
 

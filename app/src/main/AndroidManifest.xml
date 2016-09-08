@@ -47,6 +47,10 @@
         </activity>
         <activity android:name="schn.beme.storysummary.mvp.scenecharacters.SceneCharactersActivity">
         </activity>
+        <activity android:name="schn.beme.storysummary.mvp.character.CharacterActivity">
+        </activity>
+        <activity android:name="schn.beme.storysummary.mvp.charactertraits.CharacterTraitsActivity">
+        </activity>
     </application>
 
 </manifest>

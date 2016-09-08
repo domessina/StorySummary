@@ -96,7 +96,7 @@ public class SynchManager implements ConfirmDialogListener {
             indexList=i;
             ActionDoneResponse actionResponse=actionsDone.get(i);
             if(actionResponse.action.equals("CLIENT-CHOICE")){
-                DialogWindowHelper.getInstance().showConfirm(actContext,"Conflict for"+diagrams.get(indexList).title,"Do you wish to keep the Android version?",this);
+                DialogWindowHelper.getInstance().showConfirm(actContext,"Conflict for "+diagrams.get(indexList).title,"Do you wish to keep the Android version?",this);
                 //for to stop the loop when the AlertDialog appears
                 i=actionsDone.size();
             }

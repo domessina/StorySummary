@@ -14,6 +14,10 @@
           app:showAsAction="never"/>
     <!--app:showAsAction="ifRoom|withText"-->
 
+    <item android:id="@+id/action_character"
+          android:title="@string/action_character"
+          app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_debug_reg"
         android:title="register"
         app:showAsAction="never"/>

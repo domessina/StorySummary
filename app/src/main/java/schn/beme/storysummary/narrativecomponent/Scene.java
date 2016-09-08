@@ -1,5 +1,6 @@
 package schn.beme.storysummary.narrativecomponent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
@@ -18,21 +19,27 @@ public class Scene extends NarrativeComponent {
     @DatabaseField(columnName = "server_id", defaultValue = "-1")
     public Integer serverId;
 
-    @JsonProperty("chapterId")
+    @JsonIgnore
     @DatabaseField(columnName = "chapter_id",
             canBeNull = false,foreign = true,
             foreignAutoRefresh = false,
             columnDefinition = "integer references chapter(id) on delete cascade")//see third note of foreignautorefresh doc maxForeignAutoRefreshLevel = 1
     public Chapter chapterId;
 
-    @JsonProperty("diagramId")
+    @JsonProperty("chapterId")
+    public int chapterIdForSync;
+
+    @JsonIgnore
     @DatabaseField(columnName = "diagram_id",
             canBeNull = false, foreign = true,
             foreignAutoRefresh = false,
             columnDefinition = "integer references diagram(id) on delete cascade")
     public Diagram diagramId;
 
-    @JsonProperty("position")
+    @JsonProperty("diagramId")
+    public int diagramIdForSync;
+
+    @JsonProperty("place")
     @DatabaseField(columnName = "position") //TODO rajouter canbeNull=false
     public int position;
 

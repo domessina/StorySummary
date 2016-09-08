@@ -2,10 +2,14 @@
     <string name="app_name">Story Summary</string>
 
     <string name="title_activity_section_choice">SectionChoiceActivity</string>
+    <string name="title_activity_character">Characters</string>
+    <string name="title_activity_char_trait">Characters</string>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="action_synchronize">Synchronize with the server</string>
     <string name="action_settings">Settings</string>
+    <string name="action_character">Characters</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

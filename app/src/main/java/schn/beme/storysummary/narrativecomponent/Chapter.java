@@ -1,5 +1,6 @@
 package schn.beme.storysummary.narrativecomponent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.j256.ormlite.field.DataType;
@@ -38,13 +39,15 @@ public class Chapter extends NarrativeComponent implements Comparable<Chapter> {
     public String note;
 
     //ORMLite only holds id field of diagram, so diagramId will have almost the size of an int
-    @JsonProperty("diagramId")
+    @JsonIgnore
     @DatabaseField(columnName = "diagram_id",
             canBeNull = false, foreign = true,
             foreignAutoRefresh = false,
             columnDefinition = "integer references diagram(id) on delete cascade")
     public Diagram diagramId;
 
+    @JsonProperty("diagramId")
+    public int diagramIdForSync;
 
     public Chapter(int id){this.id=id;}
 

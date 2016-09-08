@@ -79,6 +79,10 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
                 barPresenter.synchronize();
                 return true;
 
+            case R.id.action_character:
+                barPresenter.charactersMenu();
+                return true;
+
             case R.id.action_debug_reg:
                 barPresenter.registerUser();
 
@@ -87,6 +91,7 @@ public abstract class DefaultActionBarActivity extends DefaultActivity implement
             case R.id.action_debug_unreg:
                 barPresenter.unregisterUser();
                 return true;
+
 
             default:
                 // If we got here, the user's action was not recognized.

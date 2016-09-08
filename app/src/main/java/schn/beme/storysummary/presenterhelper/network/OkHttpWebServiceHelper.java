@@ -108,7 +108,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
         String body;
 
         //prepare request
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://1921.168.0.2:8080/v1/api/nc/"+type.toString()+"/list").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.0.2:8080/v1/api/nc/"+type.toString()+"/list").newBuilder();
         urlBuilder.addQueryParameter("diagramId", String.valueOf(diagramId));
         String url = urlBuilder.build().toString();
 
@@ -143,7 +143,7 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
     //--------PERFORM C UPDATE BY PUTTING ANDROID VERSION OF EVERY COMPONENT--------
 
     @Override
-    public <T extends NarrativeComponent> boolean postOrPutT(T component, E_NarrativeComponent type,boolean isPost ) {
+    public <T extends NarrativeComponent> int postOrPutT(T component, E_NarrativeComponent type,boolean isPost ) {
         ObjectMapper mapper;
         String body;
 
@@ -153,11 +153,11 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
             body = mapper.writeValueAsString(component);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return false;
+            return -5;
         }
 
         //prepare request
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("/v1/api/nc/"+type.toString()).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.0.2:8080/v1/api/nc/"+type.toString()).newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request;
@@ -176,17 +176,17 @@ public class OkHttpWebServiceHelper implements Helper.WebService{
 
         OkHttpClient client = new OkHttpClient();
         Response response;
+        String responseBody;
 
         try {
             //post request
             response = client.newCall(request).execute();
-            if(response.code()!=200)
-                return false;
+            responseBody=response.body().string();
+            return mapper.readValue(responseBody,Integer.class);
+
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return false;
+                e.printStackTrace();
+                return -5;}
     }
 
     //---------END PERFORM C UPDATE-----------------

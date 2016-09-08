@@ -5,20 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.io.IOException;
 
 import schn.beme.be.storysummary.BuildConfig;
@@ -31,6 +26,7 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
     public String sceneTitle;
     public String sceneNote;
     protected SceneCharactersPresenter presenter;
+    private RecyclerView recyclerV;
 
     @Override
     protected int getLayoutId() {
@@ -45,7 +41,13 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
         getIntentData();
         presenter=new SceneCharactersPresenter<>(this,sceneId);
         initContent();
+        setTitle("Scenes");
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onStart();
     }
 
     @Override
@@ -60,6 +62,12 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
         presenter.onResume();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.onStop();
+    }
+
     private void getIntentData(){
         sceneId=getIntent().getIntExtra("sceneId",-1);
         sceneTitle=getIntent().getStringExtra("sceneTitle");
@@ -70,15 +78,57 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
 
     private void initContent(){
 
+        initRecyclerView();
+        initFAB();
         EditText titleEdit=(EditText)findViewById(R.id.edit_scenec_title);
         titleEdit.setText(sceneTitle);
         EditText noteEdit=(EditText)findViewById(R.id.edit_scenec_note);
         noteEdit.setText(sceneNote);
     }
 
+    private void initRecyclerView(){
+        recyclerV=(RecyclerView)findViewById(R.id.recycler_scene_char);
+        recyclerV.setHasFixedSize(true);
+        LinearLayoutManager lLManager = new LinearLayoutManager(this);
+        lLManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerV.setLayoutManager(lLManager);
+        recyclerV.setAdapter(presenter.getCharacterAdapter());
+        registerForContextMenu(recyclerV);
+    }
+
+    private void initFAB(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_add_scroll);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.addCharacter();
+            }
+        });
+    }
+
     public void onClickSaveButton(View v){
         presenter.saveBtnClicked();
     }
+
+
+    @Override
+    public String getSceneTitle() {
+
+        return ((TextView)findViewById(R.id.edit_scenec_title)).getText().toString();
+    }
+
+    @Override
+    public String getSceneNote() {
+
+        return ((TextView)findViewById(R.id.edit_scenec_note)).getText().toString();
+    }
+
+    @Override
+    public void scrollToEnd() {
+
+        recyclerV.scrollToPosition(presenter.getLastPositionTotal());
+    }
+
 
 
     //----------PICTURE IMPORTATION--------------
@@ -123,7 +173,7 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
                                  Intent resultData) {
 
 
-        ImageView img= (ImageView)findViewById(R.id.image_senec_import);
+        ImageView img=null; //(ImageView)findViewById(R.id.image_senec_import);
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
@@ -136,7 +186,7 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-                TextView tv=(TextView) findViewById(R.id.text_scenec_picture_uri);
+                TextView tv=null;//(TextView) findViewById(R.id.text_scenec_picture_uri);
                 tv.setText(uri.toString());
                 showToast(uri.getPath());
                 Bitmap mImageBitmap = null;
@@ -155,16 +205,4 @@ public class SceneCharactersActivity extends DefaultActionBarActivity implements
 
     //-----------END PICTURE IMPORTATION---------------
 
-
-    @Override
-    public String getSceneTitle() {
-
-        return ((TextView)findViewById(R.id.edit_scenec_title)).getText().toString();
-    }
-
-    @Override
-    public String getSceneNote() {
-
-        return ((TextView)findViewById(R.id.edit_scenec_note)).getText().toString();
-    }
 }

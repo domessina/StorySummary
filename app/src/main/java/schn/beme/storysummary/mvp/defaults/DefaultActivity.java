@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import schn.beme.storysummary.MyApplication;
 import schn.beme.storysummary.mvp.chapter.ChapterActivity;
+import schn.beme.storysummary.mvp.charactertraits.CharacterTraitsActivity;
 import schn.beme.storysummary.mvp.registration.RegistrationActivity;
 import schn.beme.storysummary.mvp.scene.SceneActivity;
 import schn.beme.storysummary.mvp.scenecharacters.SceneCharactersActivity;
@@ -126,6 +127,13 @@ public class DefaultActivity extends AppCompatActivity implements DefaultPresent
         //there is a unknown bug, the activity is launched multiple times! In consequence I do the following action:
 //        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        startActivity(intent);
+    }
+
+    @Override
+    public void startCharacterTraitsActivity(int characterId) {
+        intent=new Intent(this, CharacterTraitsActivity.class);
+        intent.putExtra("characterId",characterId);
         startActivity(intent);
     }
 }
